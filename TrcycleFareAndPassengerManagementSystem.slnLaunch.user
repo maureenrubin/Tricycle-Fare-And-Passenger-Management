@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "StartServerAndClient",
+    "Projects": [
+      {
+        "Path": "TrcycleFareAndPassengerManagementSystem.Client\\TrcycleFareAndPassengerManagementSystem.Client.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "TricyleFareAndPassengerManagementSystem.Api\\TricyleFareAndPassengerManagementSystem.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
