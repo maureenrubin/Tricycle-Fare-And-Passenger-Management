@@ -113,7 +113,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
         Console.WriteLine($"User authenticated: {isAuthenticated}");
     }

@@ -1,8 +1,7 @@
 ﻿@page "/dashboard"
-@attribute [Authorize]
+@attribute [Authorize (Roles = "Admin")]
 @layout MainLayout
 @rendermode InteractiveServer
-
 
 <MudContainer>
     <MudText>
