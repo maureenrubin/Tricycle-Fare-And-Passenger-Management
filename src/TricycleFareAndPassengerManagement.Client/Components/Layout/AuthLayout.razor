@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @attribute [AllowAnonymous]
+@rendermode InteractiveServer
 
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -9,10 +10,9 @@
 <MudContainer>
     <MudMainContent>
         <MudContainer class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </MudContainer>
 
-        <MudContainer class="content px-4">
+        <MudContainer class="content">
             @Body
         </MudContainer>
     </MudMainContent>

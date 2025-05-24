@@ -1,10 +1,339 @@
 ﻿@page "/userdashboard"
-@attribute [Authorize (Roles = "DefaultUser")]
 @layout DefaultUserLayout
+@inject ITripClientService Trip
+@inject IDriverClientService Driver
+@inject IPassengerClientService Passenger
+@inject IReportClientService Report
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 
-<MudContainer>
-    <MudText>
-        Welcome to the Dashboard! This is a protected page that only authenticated users can access.
-    </MudText>
-</MudContainer>
+@if (isLoading)
+{
+    <Loader />
+}
+else
+{
+    <div class="p-6 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+                <p class="text-gray-600">Overview of your tricycle fare and passenger management system</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-8">
+                <MudCard Elevation="5">
+                    <MudCardContent Class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.DirectionsCar" Color="Color.Primary" Size="Size.Large" />
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Drivers</p>
+                                <p class="text-2xl font-bold text-gray-900">@totalDrivers</p>
+                                <p class="text-xs text-green-600">@activeDrivers active</p>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+
+                <MudCard Elevation="5">
+                    <MudCardContent Class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Success" Size="Size.Large" />
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Passengers</p>
+                                <p class="text-2xl font-bold text-gray-900">@totalPassengers</p>
+                                <p class="text-xs text-green-600">@activePassengers active</p>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+
+                <MudCard Elevation="5">
+                    <MudCardContent Class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.Route" Color="Color.Secondary" Size="Size.Large" />
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Trips</p>
+                                <p class="text-2xl font-bold text-gray-900">@totalTrips</p>
+                                <p class="text-xs text-blue-600">@todayTrips today</p>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+
+                <MudCard Elevation="5">
+                    <MudCardContent Class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Warning" Size="Size.Large" />
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Today's Revenue</p>
+                                <p class="text-2xl font-bold text-gray-900">₱@todayRevenue.ToString("F2")</p>
+                                <p class="text-xs text-green-600">+@revenueGrowth.ToString("F1")% from yesterday</p>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </div>
+
+            <!-- Charts and Tables Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Recent Trips -->
+                <MudCard Class="shadow-lg">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Recent Trips</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudButton Href="/trips" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small">
+                                View All
+                            </MudButton>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @if (isLoading)
+                        {
+                            <div class="flex justify-center py-8">
+                                <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                            </div>
+                        }
+                        else if (recentTrips.Any())
+                        {
+                            <div class="space-y-4">
+                                @foreach (var trip in recentTrips.Take(5))
+                                {
+                                    <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Route" Color="Color.Primary" Size="Size.Small" />
+                                            </div>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                                @trip.DriverName - @trip.TricycleNumber
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">
+                                                @trip.PickupLocation → @trip.DropoffLocation
+                                            </p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm font-medium text-gray-900">₱@trip.TotalFare.ToString("F2")</p>
+                                            <p class="text-xs text-gray-500">@trip.TripDate.ToString("HH:mm")</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-8">
+                                <MudIcon Icon="@Icons.Material.Filled.Route" Size="Size.Large" Class="text-gray-400 mb-2" />
+                                <p class="text-gray-500">No trips recorded yet</p>
+                            </div>
+                        }
+                    </MudCardContent>
+                </MudCard>
+
+                <!-- Daily Report -->
+                <MudCard Class="shadow-lg">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Today's Report</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudButton Href="/reports" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small">
+                                View Reports
+                            </MudButton>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @if (isLoading)
+                        {
+                            <div class="flex justify-center py-8">
+                                <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                            </div>
+                        }
+                        else if (dailyReport != null)
+                        {
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                        <p class="text-2xl font-bold text-blue-600">@dailyReport.TotalTrips</p>
+                                        <p class="text-sm text-gray-600">Trips Completed</p>
+                                    </div>
+                                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                                        <p class="text-2xl font-bold text-green-600">₱@dailyReport.TotalRevenue.ToString("F2")</p>
+                                        <p class="text-sm text-gray-600">Total Revenue</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                                        <p class="text-2xl font-bold text-purple-600">@dailyReport.TotalDistance.ToString("F1")</p>
+                                        <p class="text-sm text-gray-600">Total Distance (km)</p>
+                                    </div>
+                                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                                        <p class="text-2xl font-bold text-yellow-600">@dailyReport.ActiveDrivers</p>
+                                        <p class="text-sm text-gray-600">Active Drivers</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-8">
+                                <MudIcon Icon="@Icons.Material.Filled.Assessment" Size="Size.Large" Class="text-gray-400 mb-2" />
+                                <p class="text-gray-500">No data available for today</p>
+                            </div>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            </div>
+
+            <!-- Quick Actions -->
+            <MudCard Class="shadow-lg">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Quick Actions</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <MudButton Href="/trips" Variant="Variant.Filled" Color="Color.Info"
+                                   StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Size="Size.Large"
+                                   Class="h-16 text-left justify-start">
+                            <div>
+                                <div class="font-semibold">Create Trip</div>
+                                <div class="text-sm opacity-75">Start a new journey</div>
+                            </div>
+                        </MudButton>
+
+                        <MudButton Href="/drivers" Variant="Variant.Filled" Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.PersonAdd" FullWidth="true" Size="Size.Large"
+                                   Class="h-16 text-left justify-start">
+                            <div>
+                                <div class="font-semibold">Add Driver</div>
+                                <div class="text-sm opacity-75">Register new driver</div>
+                            </div>
+                        </MudButton>
+
+                        <MudButton Href="/passengers" Variant="Variant.Filled" Color="Color.Success"
+                                   StartIcon="@Icons.Material.Filled.GroupAdd" FullWidth="true" Size="Size.Large"
+                                   Class="h-16 text-left justify-start">
+                            <div>
+                                <div class="font-semibold">Add Passenger</div>
+                                <div class="text-sm opacity-75">Register new passenger</div>
+                            </div>
+                        </MudButton>
+
+                        <MudButton Href="/reports" Variant="Variant.Filled" Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Assessment" FullWidth="true" Size="Size.Large"
+                                   Class="h-16 text-left justify-start">
+                            <div>
+                                <div class="font-semibold">View Reports</div>
+                                <div class="text-sm opacity-75">Analytics & insights</div>
+                            </div>
+                        </MudButton>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+
+}
+
+
+@code {
+    private bool isLoading = false;
+
+    // Dashboard statistics
+    private int totalDrivers = 0;
+    private int activeDrivers = 0;
+    private int totalPassengers = 0;
+    private int activePassengers = 0;
+    private int totalTrips = 0;
+    private int todayTrips = 0;
+    private decimal todayRevenue = 0;
+    private double revenueGrowth = 0;
+
+    // Data collections
+    private List<TripDto> recentTrips = new();
+    private DailyReportDto? dailyReport;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDashboardData();
+    }
+
+    private async Task LoadDashboardData()
+    {
+        isLoading = true;
+        try
+        {
+            // Load all data concurrently
+            var driversTask = Driver.GetAllDriversAsync();
+            var passengersTask = Passenger.GetAllPassengersAsync();
+            var tripsTask = Trip.GetAllTripsAsync();
+            var dailyReportTask = Report.GetDailyReportAsync(DateTime.Today);
+
+            await Task.WhenAll(driversTask, passengersTask, tripsTask, dailyReportTask);
+
+            // Process drivers data
+            var drivers = await driversTask;
+            totalDrivers = drivers.Count;
+            activeDrivers = drivers.Count(d => d.IsActive);
+
+            // Process passengers data
+            var passengers = await passengersTask;
+            totalPassengers = passengers.Count;
+            activePassengers = passengers.Count(p => p.IsActive);
+
+            // Process trips data
+            var trips = await tripsTask;
+            totalTrips = trips.Count;
+            recentTrips = trips.OrderByDescending(t => t.TripDate).ToList();
+
+            // Today's trips
+            var today = DateTime.Today;
+            var todayTripsList = trips.Where(t => t.TripDate.Date == today).ToList();
+            todayTrips = todayTripsList.Count;
+            todayRevenue = todayTripsList.Sum(t => t.TotalFare);
+
+            // Calculate revenue growth (mock calculation - you might want to implement actual yesterday's data)
+            var yesterday = today.AddDays(-1);
+            var yesterdayTrips = trips.Where(t => t.TripDate.Date == yesterday).ToList();
+            var yesterdayRevenue = yesterdayTrips.Sum(t => t.TotalFare);
+
+            if (yesterdayRevenue > 0)
+            {
+                revenueGrowth = (double) (((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100);
+            }
+
+            // Load daily report
+            dailyReport = await dailyReportTask;
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading dashboard data: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TricycleFareAndPassengerManagement.Application.Common.DTOs;
 using TricycleFareAndPassengerManagement.Application.Features.Driver.Commands;
@@ -12,14 +13,14 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
     {
         #region Public Methods
 
-        [HttpPost("drivers")]
+        [HttpPost("create")]
         public async Task<ActionResult<int>> CreateDriver([FromBody] CreateDriverCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-        [HttpGet("drivers")]
+        [HttpGet("getall")]
         public async Task<ActionResult<List<DriverDto>>> GetAllDrivers()
         {
             var query = new GetAllDriversQuery();
@@ -27,7 +28,7 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("drivers/{id}")]
+        [HttpGet("getbyid/{id}")]
         public async Task<ActionResult<DriverDto>> GetDriverById(int id)
         {
             var query = new GetDriverByIdQuery { Id = id };
@@ -39,7 +40,7 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut("drivers/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<ActionResult<bool>> UpdateDriver(int id, [FromBody] UpdateDriverCommand command)
         {
             if (id != command.Id)
@@ -53,7 +54,7 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("drivers/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult<bool>> DeleteDriver(int id)
         {
             var command = new DeleteDriverCommand { Id = id };

@@ -1,5 +1,6 @@
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\input.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
@@ -23,6 +24,7 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\Tailwind\output.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
@@ -41,10 +43,12 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\output.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.js
 wwwroot\app.css
 wwwroot\favicon.png
+wwwroot\input.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
@@ -89,3 +93,5 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\output.css
+wwwroot\Tailwind\output.css

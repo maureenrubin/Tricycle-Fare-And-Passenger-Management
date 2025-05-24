@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TricycleFareAndPassengerManagement.Application.Common.DTOs;
 using TricycleFareAndPassengerManagement.Application.Features.Passengers.Commands;
@@ -12,14 +13,14 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
     {
         #region Public Methods
 
-        [HttpPost("passengers")]
+        [HttpPost("create")]
         public async Task<ActionResult<int>> CreatePassenger([FromBody] CreatePassengerCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-        [HttpGet("passengers")]
+        [HttpGet("getall")]
         public async Task<ActionResult<List<PassengerDto>>> GetAllPassengers()
         {
             var query = new GetAllPassengersQuery();
@@ -27,7 +28,7 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut("passengers/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<ActionResult<bool>> UpdatePassenger(int id, [FromBody] UpdatePassengerCommand command)
         {
             if (id != command.Id)

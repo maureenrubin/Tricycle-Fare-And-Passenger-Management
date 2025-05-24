@@ -1,15 +1,18 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TricycleFareAndPassengerManagement.Application.Common.DTOs;
 using TricycleFareAndPassengerManagement.Application.Features.Fares.Queries;
 
 namespace TricycleFareAndPassengerManagement.Api.Controllers
 {
-    public class FareController(IMediator _mediator) : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class FareController(IMediator _mediator) : ControllerBase
     {
         #region Public Methods
 
-        [HttpPost("fares/calculate")]
+        [HttpPost("calculate")]
         public async Task<ActionResult<FareCalculationDto>> CalculateFare([FromBody] CalculateFareQuery query)
         {
             var result = await _mediator.Send(query);

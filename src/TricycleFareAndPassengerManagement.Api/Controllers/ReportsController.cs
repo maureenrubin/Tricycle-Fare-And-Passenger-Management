@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TricycleFareAndPassengerManagement.Application.Common.DTOs;
 using TricycleFareAndPassengerManagement.Application.Features.Reports.Queries;
@@ -11,7 +12,7 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
     {
         #region Public Methods
 
-        [HttpGet("reports/daily")]
+        [HttpGet("getreports")]
         public async Task<ActionResult<DailyReportDto>> GetDailyReport([FromQuery] DateTime date)
         {
             var query = new GetDailyReportQuery { Date = date };
@@ -19,7 +20,7 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("reports/daily/{date}")]
+        [HttpGet("getreportbydate/{date}")]
         public async Task<ActionResult<DailyReportDto>> GetDailyReportByDate(DateTime date)
         {
             var query = new GetDailyReportQuery { Date = date };

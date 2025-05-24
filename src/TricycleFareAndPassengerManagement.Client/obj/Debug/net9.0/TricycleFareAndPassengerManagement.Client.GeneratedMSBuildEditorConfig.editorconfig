@@ -27,6 +27,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Dialogs/PassengerDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEaWFsb2dzXFBhc3NlbmdlckRpYWxvZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Dialogs/TripDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEaWFsb2dzXFRyaXBEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/AuthLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcQXV0aExheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -74,3 +82,7 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-8bzk26b8m2
+
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Shared/Loader.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvYWRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0unf1xqqrk

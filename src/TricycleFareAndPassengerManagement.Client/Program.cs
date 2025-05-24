@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
+using System.Text;
 using TricycleFareAndPassengerManagement.Client;
 using TricycleFareAndPassengerManagement.Client.Components;
 
@@ -15,12 +16,38 @@ builder.Services.AddHttpClient("API", client =>
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
+        var jwtSettings = builder.Configuration.GetSection("JWT");
+        var secretKey = jwtSettings["Secret"] ?? "your-super-secret-key-here-must-be-at-least-64-characters-long-for-production";
+        var issuer = jwtSettings["Issuer"] ?? "TFPMAPI";
+        var audience = jwtSettings["Audience"] ?? "TFPMClient";
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false,
-            ValidateIssuer = false,
+            ValidateAudience = true,
+            ValidateIssuer = true,
             ValidateLifetime = true,
-            ValidateIssuerSigningKey = false
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            ClockSkew = TimeSpan.Zero
+        };
+
+        options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                // Try to get token from Authorization header first
+                var token = context.Request.Headers["Authorization"]
+                    .FirstOrDefault()?.Split(" ").Last();
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Token = token;
+                }
+
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -48,12 +75,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseHttpsRedirection();
 app.UseAntiforgery();
+
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

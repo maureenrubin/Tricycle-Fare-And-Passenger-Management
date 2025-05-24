@@ -181,7 +181,6 @@ namespace TricycleFareAndPassengerManagement.Client.Services
             }
         }
 
-
         public async Task<string?> GetTokenAsync()
         {
             return await _localStorage.GetItemAsStringAsync(TokenKey);

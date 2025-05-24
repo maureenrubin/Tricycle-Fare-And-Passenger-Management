@@ -9,6 +9,7 @@ using TricycleFareAndPassengerManagement.Application.Features.Auth.Queries;
 
 namespace TricycleFareAndPassengerManagement.Api.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController(IMediator _mediator) : ControllerBase

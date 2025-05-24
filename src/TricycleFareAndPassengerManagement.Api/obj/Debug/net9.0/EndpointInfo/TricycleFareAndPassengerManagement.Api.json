@@ -159,7 +159,7 @@
         }
       }
     },
-    "/api/Driver/drivers": {
+    "/api/Driver/create": {
       "post": {
         "tags": [
           "Driver"
@@ -208,7 +208,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Driver/getall": {
       "get": {
         "tags": [
           "Driver"
@@ -246,7 +248,7 @@
         }
       }
     },
-    "/api/Driver/drivers/{id}": {
+    "/api/Driver/getbyid/{id}": {
       "get": {
         "tags": [
           "Driver"
@@ -284,7 +286,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Driver/update/{id}": {
       "put": {
         "tags": [
           "Driver"
@@ -341,7 +345,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Driver/delete/{id}": {
       "delete": {
         "tags": [
           "Driver"
@@ -381,7 +387,7 @@
         }
       }
     },
-    "/fares/calculate": {
+    "/api/Fare/calculate": {
       "post": {
         "tags": [
           "Fare"
@@ -429,7 +435,7 @@
         }
       }
     },
-    "/api/Passengers/passengers": {
+    "/api/Passengers/create": {
       "post": {
         "tags": [
           "Passengers"
@@ -478,7 +484,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Passengers/getall": {
       "get": {
         "tags": [
           "Passengers"
@@ -516,7 +524,7 @@
         }
       }
     },
-    "/api/Passengers/passengers/{id}": {
+    "/api/Passengers/update/{id}": {
       "put": {
         "tags": [
           "Passengers"
@@ -575,7 +583,7 @@
         }
       }
     },
-    "/api/Reports/reports/daily": {
+    "/api/Reports/getreports": {
       "get": {
         "tags": [
           "Reports"
@@ -614,7 +622,7 @@
         }
       }
     },
-    "/api/Reports/reports/daily/{date}": {
+    "/api/Reports/getreportbydate/{date}": {
       "get": {
         "tags": [
           "Reports"
@@ -654,7 +662,7 @@
         }
       }
     },
-    "/trips": {
+    "/api/Trip/create": {
       "post": {
         "tags": [
           "Trip"
@@ -703,7 +711,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Trip/getall": {
       "get": {
         "tags": [
           "Trip"
@@ -860,6 +870,10 @@
             "format": "int32"
           },
           "totalRevenue": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalDistance": {
             "type": "number",
             "format": "double"
           },
