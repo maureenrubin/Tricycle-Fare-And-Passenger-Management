@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+@attribute [Authorize]
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudContainer>
+
+    <MudMainContent>
+        <MudContainer class="content px-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudContainer>
+
+<AuthInitializer />

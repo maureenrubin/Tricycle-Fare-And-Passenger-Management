@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+@attribute [AllowAnonymous]
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudContainer>
+    <MudMainContent>
+        <MudContainer class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </MudContainer>
+
+        <MudContainer class="content px-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudContainer>
+
+<AuthInitializer />

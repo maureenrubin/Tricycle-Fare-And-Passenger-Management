@@ -1,0 +1,248 @@
+﻿@page "/trips"
+@inject ITripClientService Trip
+@inject IDriverClientService Driver
+@inject IPassengerClientService Passenger
+@inject IFareClientService Fare
+@inject ISnackbar Snackbar
+@layout DefaultUserLayout
+@attribute [Authorize(Roles = "DefaultUser")]
+@rendermode InteractiveServer
+
+<div class="p-6 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-6 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-900">Trip Management</h1>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" 
+                       OnClick="OpenCreateDialog" Class="bg-blue-600 hover:bg-blue-700">
+                Create Trip
+            </MudButton>
+        </div>
+
+        <MudCard Class="shadow-lg">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Trip Records</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTable Items="@trips" Hover="true" Striped="true" Loading="@loading">
+                    <HeaderContent>
+                        <MudTh>Driver</MudTh>
+                        <MudTh>Tricycle</MudTh>
+                        <MudTh>Passenger</MudTh>
+                        <MudTh>Route</MudTh>
+                        <MudTh>Distance</MudTh>
+                        <MudTh>Fare</MudTh>
+                        <MudTh>Date</MudTh>
+                        <MudTh>Status</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Driver">@context.DriverName</MudTd>
+                        <MudTd DataLabel="Tricycle">@context.TricycleNumber</MudTd>
+                        <MudTd DataLabel="Passenger">@context.PassengerName</MudTd>
+                        <MudTd DataLabel="Route">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm">@context.PickupLocation</span>
+                                <span class="text-gray-400">→</span>
+                                <span class="text-sm">@context.DropoffLocation</span>
+                            </div>
+                        </MudTd>
+                        <MudTd DataLabel="Distance">@context.Distance.ToString("F1") km</MudTd>
+                        <MudTd DataLabel="Fare">₱@context.TotalFare.ToString("F2")</MudTd>
+                        <MudTd DataLabel="Date">@context.TripDate.ToString("MMM dd, yyyy HH:mm")</MudTd>
+                        <MudTd DataLabel="Status">
+                            <MudChip T="string" Color="Color.Success" Size="Size.Small">@context.Status</MudChip>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudCardContent>
+        </MudCard>
+    </div>
+</div>
+
+<!-- Create Trip Dialog -->
+<MudDialog @bind-IsVisible="showDialog" Options="dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Create New Trip</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm @ref="form" Model="@tripModel" Validation="@(validationFunc)">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @bind-Value="tripModel.DriverId" Label="Select Driver" Variant="Variant.Outlined" Required="true">
+                        @foreach (var driver in drivers)
+                        {
+                            <MudSelectItem Value="@driver.Id">@driver.FullName (@driver.TricycleNumber)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @bind-Value="tripModel.PassengerId" Label="Select Passenger" Variant="Variant.Outlined" Required="true">
+                        @foreach (var passenger in passengers)
+                        {
+                            <MudSelectItem Value="@passenger.Id">@passenger.FullName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="tripModel.PickupLocation" Label="Pickup Location" Variant="Variant.Outlined" 
+                                  For="@(() => tripModel.PickupLocation)" Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="tripModel.DropoffLocation" Label="Dropoff Location" Variant="Variant.Outlined" 
+                                  For="@(() => tripModel.DropoffLocation)" Required="true" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudNumericField @bind-Value="tripModel.Distance" Label="Distance (km)" Variant="Variant.Outlined" 
+                                     Min="0.1" Max="100" Step="0.1" Required="true" For="@(() => tripModel.Distance)" />
+                </MudItem>
+                @if (fareCalculation != null)
+                {
+                    <MudItem xs="12">
+                        <MudCard Class="bg-blue-50 border border-blue-200">
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle2" Class="mb-2">Fare Calculation</MudText>
+                                <div class="space-y-1 text-sm">
+                                    <div class="flex justify-between">
+                                        <span>Base Fare:</span>
+                                        <span>₱@fareCalculation.BaseFare.ToString("F2")</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Distance (@fareCalculation.Distance km × ₱@fareCalculation.PerKmRate):</span>
+                                        <span>₱@((decimal)(fareCalculation.Distance * (double)fareCalculation.PerKmRate)).ToString("F2")</span>
+                                    </div>
+                                    <hr class="my-2" />
+                                    <div class="flex justify-between font-semibold">
+                                        <span>Total Fare:</span>
+                                        <span>₱@fareCalculation.TotalFare.ToString("F2")</span>
+                                    </div>
+                                </div>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseDialog">Cancel</MudButton>
+        <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="CalculateFare" Disabled="@(tripModel.Distance <= 0)">
+            Calculate Fare
+        </MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SaveTrip" Disabled="@saving">
+            @if (saving)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Creating...</MudText>
+            }
+            else
+            {
+                <MudText>Create Trip</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private List<TripDto> trips = new();
+    private List<DriverDto> drivers = new();
+    private List<PassengerDto> passengers = new();
+    private bool loading = true;
+    private bool showDialog = false;
+    private bool saving = false;
+    private MudForm form;
+    private CreateTripCommand tripModel = new();
+    private FareCalculationDto? fareCalculation;
+    private CreateTripValidator validator = new();
+    
+    private DialogOptions dialogOptions = new() { MaxWidth = MaxWidth.Large, FullWidth = true };
+
+    private Func<object, string, Task<IEnumerable<string>>> validationFunc => async (model, propertyName) =>
+    {
+        var result = await validator.ValidateAsync(FluentValidation.ValidationContext<CreateTripCommand>
+            .CreateWithOptions((CreateTripCommand)model, x => x.IncludeProperties(propertyName)));
+        return result.IsValid ? Array.Empty<string>() : result.Errors.Select(e => e.ErrorMessage);
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        loading = true;
+        try
+        {
+            var tripTask = Trip.GetAllTripsAsync();
+            var driverTask = Driver.GetAllDriversAsync();
+            var passengerTask = Passenger.GetAllPassengersAsync();
+
+            await Task.WhenAll(tripTask, driverTask, passengerTask);
+
+            trips = tripTask.Result;
+            drivers = driverTask.Result.Where(d => d.IsActive).ToList();
+            passengers = passengerTask.Result.Where(p => p.IsActive).ToList();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading data: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void OpenCreateDialog()
+    {
+        tripModel = new CreateTripCommand();
+        fareCalculation = null;
+        showDialog = true;
+    }
+
+    private void CloseDialog()
+    {
+        showDialog = false;
+        tripModel = new CreateTripCommand();
+        fareCalculation = null;
+    }
+
+    private async Task CalculateFare()
+    {
+        if (tripModel.Distance > 0)
+        {
+            try
+            {
+                fareCalculation = await Fare.CalculateFareAsync(tripModel.Distance);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error calculating fare: {ex.Message}", Severity.Error);
+            }
+        }
+    }
+
+    private async Task SaveTrip()
+    {
+        await form.Validate();
+        if (!form.IsValid) return;
+
+        saving = true;
+        try
+        {
+            await Trip.CreateTripAsync(tripModel);
+            Snackbar.Add("Trip created successfully", Severity.Success);
+            CloseDialog();
+            await LoadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error creating trip: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+}

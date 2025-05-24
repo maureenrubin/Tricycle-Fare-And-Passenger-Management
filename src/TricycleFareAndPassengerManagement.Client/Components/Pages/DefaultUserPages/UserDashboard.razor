@@ -1,0 +1,10 @@
+﻿@page "/userdashboard"
+@attribute [Authorize (Roles = "DefaultUser")]
+@layout DefaultUserLayout
+@rendermode InteractiveServer
+
+<MudContainer>
+    <MudText>
+        Welcome to the Dashboard! This is a protected page that only authenticated users can access.
+    </MudText>
+</MudContainer>
