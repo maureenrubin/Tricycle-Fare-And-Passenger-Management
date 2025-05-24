@@ -74,19 +74,19 @@ namespace TricycleFareAndPassengerManagement.Infrastructure.Services
                 {
                     FullName = fullName,
                     Email = email.ToLower(),
-                    PasswordHash = passwordHash
+                    PasswordHash = passwordHash,
                 };
 
                 var createdUser = await _userRepository.CreateAsync(user);
 
                 // Assign default "User" role
-                var userRole = await _roleRepository.GetByNameAsync("User");
+                var userRole = await _roleRepository.GetByNameAsync("DefaultUser");
                 if (userRole != null)
                 {
                     await _roleRepository.AssignRoleToUserAsync(createdUser.Id, userRole.Id);
                 }
 
-                var roles = new List<string> { "User" };
+                var roles = new List<string> { "DefaultUser" };
                 var token = _tokenService.GenerateAccessToken(createdUser, roles);
                 var refreshToken = _tokenService.GenerateRefreshToken();
 

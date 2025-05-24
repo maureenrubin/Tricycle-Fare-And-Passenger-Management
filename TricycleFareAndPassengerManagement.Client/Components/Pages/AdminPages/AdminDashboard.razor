@@ -1,0 +1,10 @@
+﻿@page "/admindashboard"
+@attribute [Authorize(Roles = "Admin")]
+@layout MainLayout
+@rendermode InteractiveServer
+
+<MudContainer>
+    <MudText>
+        Welcome to the Dashboard! This is a protected page that only authenticated users can access.
+    </MudText>
+</MudContainer>

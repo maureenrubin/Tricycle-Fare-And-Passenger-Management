@@ -1,6 +1,6 @@
-﻿@page "/dashboard"
-@attribute [Authorize (Roles = "Admin")]
-@layout MainLayout
+﻿@page "/userdashboard"
+@attribute [Authorize (Roles = "DefaultUser")]
+@layout DefaultUserLayout
 @rendermode InteractiveServer
 
 <MudContainer>

@@ -18,9 +18,6 @@ namespace TricycleFareAndPassengerManagement.Domain.Entities
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
 
-        [Required, EmailAddress, MaxLength(255)]
-        public string RecoveryEmail { get; set; } = string.Empty;
-
         public bool IsActive { get; set; } = true;
 
         [Required]
