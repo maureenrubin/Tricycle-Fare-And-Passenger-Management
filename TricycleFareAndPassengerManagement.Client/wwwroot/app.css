@@ -1,6 +1,17 @@
 html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
+.app-bar {
+    background-color: #689064 !important;
+    color: white;
+}
+
 
 a, .btn-link {
     color: #006bb7;
@@ -58,3 +69,57 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+
+.login-container {
+    display: flex;
+    gap: 2rem;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+}
+
+.left-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-image {
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 590px; 
+    border-radius: 1rem 0 0 1rem;
+    object-fit: cover;
+}
+
+.login-card {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0 1rem 1rem 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 600px;
+    height: 540px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+}
+
+
+.login-button {
+    width: 100%;
+    height: 50px;
+    font-size: 1.125rem;
+    border-radius: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #689064 !important;
+}
+
+
+
