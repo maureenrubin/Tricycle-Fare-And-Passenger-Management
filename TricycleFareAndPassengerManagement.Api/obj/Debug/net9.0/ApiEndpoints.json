@@ -29,7 +29,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "TricycleFareAndPassengerManagement.Api.Controllers.AuthController\u002BLoginRequest",
+        "Type": "TricycleFareAndPassengerManagement.Application.Common.DTOs.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -75,7 +75,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "TricycleFareAndPassengerManagement.Api.Controllers.AuthController\u002BRegisterRequest",
+        "Type": "TricycleFareAndPassengerManagement.Application.Common.DTOs.RegisterRequest",
         "IsRequired": true
       }
     ],
