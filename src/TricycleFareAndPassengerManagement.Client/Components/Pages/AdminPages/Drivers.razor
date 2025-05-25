@@ -1,0 +1,159 @@
+﻿@page "/drivers"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@using TricycleFareAndPassengerManagement.Client.Components.Dialogs
+@using TricycleFareAndPassengerManagement.Application.Features.Driver.Commands
+@using TricycleFareAndPassengerManagement.Application.Features.Driver.Queries
+@using TricycleFareAndPassengerManagement.Application.Common.DTOs.Response
+@using TricycleFareAndPassengerManagement.Client.Common.Validators.Driver
+@inject IDriverClientService DriverService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@layout DefaultUserLayout
+
+@if (isLoading)
+{
+    <Loader />
+}
+else
+{
+    <div class="p-6 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-6 mt-4 flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-900">Driver Management</h1>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+                           OnClick="OpenCreateDialog" Class="bg-blue-600 hover:bg-blue-700">
+                    Add Driver
+                </MudButton>
+            </div>
+
+            <MudCard Class="shadow-lg">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Driver Records</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTable Items="@drivers" Hover="true" Striped="true" Loading="@isLoading">
+                        <HeaderContent>
+                            <MudTh>Full Name</MudTh>
+                            <MudTh>License No.</MudTh>
+                            <MudTh>Phone</MudTh>
+                            <MudTh>Tricycle No.</MudTh>
+                            <MudTh>Status</MudTh>
+                            <MudTh>Actions</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Full Name">@context.FullName</MudTd>
+                            <MudTd DataLabel="License No.">@context.LicenseNumber</MudTd>
+                            <MudTd DataLabel="Phone">@context.PhoneNumber</MudTd>
+                            <MudTd DataLabel="Tricycle No.">@context.TricycleNumber</MudTd>
+                            <MudTd DataLabel="Status">
+                                <MudChip T="string"
+                                         Color="@(context.IsActive ? Color.Success : Color.Error)"
+                                         Size="Size.Small">
+                                    @(context.IsActive ? "Active" : "Inactive")
+                                </MudChip>
+                            </MudTd>
+                            <MudTd DataLabel="Actions">
+                                <MudButton Size="Size.Small"
+                                           Variant="Variant.Text"
+                                           Color="Color.Primary"
+                                           StartIcon="@Icons.Material.Filled.Edit"
+                                           OnClick="() => OpenEditDialog(context)">
+                                    Edit
+                                </MudButton>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+}
+
+@code {
+    private List<DriverDto> drivers = new();
+    private bool isLoading = false;
+
+    private UpdateDriverCommand updateDriverModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDrivers();
+        isLoading = false;
+    }
+
+    private async Task LoadDrivers()
+    {
+        isLoading = true;
+        try
+        {
+            drivers = await DriverService.GetAllDriversAsync();
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading drivers: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async void OpenCreateDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { "DriverModel", new CreateDriverCommand() },
+            { "IsEditing", false }
+        };
+
+
+        var options = new DialogOptions { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<DriversDialog>("Add Driver", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            var driverData = (CreateDriverCommand)result.Data;
+            await DriverService.CreateDriverAsync(driverData);
+            Snackbar.Add("Driver created successfully", Severity.Success);
+            await LoadDrivers();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async void OpenEditDialog(DriverDto driver)
+    {
+        var model = new CreateDriverCommand
+            {
+                FullName = driver.FullName,
+                LicenseNumber = driver.LicenseNumber,
+                PhoneNumber = driver.PhoneNumber,
+                TricycleNumber = driver.TricycleNumber
+            };
+
+        var parameters = new DialogParameters
+        {
+            { "DriverModel", model },
+            { "IsEditing", true },
+            { "DriverId", driver.Id }
+        };
+
+        var options = new DialogOptions { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<DriversDialog>("Edit Driver", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            var driverData = (CreateDriverCommand)result.Data;
+            // Implement UpdateDriverAsync in your service
+            // await DriverService.UpdateDriverAsync(driver.Id, driverData);
+            Snackbar.Add("Driver updated successfully", Severity.Success);
+            await LoadDrivers();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}
