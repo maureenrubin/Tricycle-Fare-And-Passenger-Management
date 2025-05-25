@@ -1,0 +1,262 @@
+﻿@page "/trips"
+@using TricycleFareAndPassengerManagement.Client.Components.Dialogs
+@inject ITripClientService Trip
+@inject IDriverClientService Driver
+@inject IPassengerClientService Passenger
+@inject IFareClientService Fare
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@layout DefaultUserLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@if (isLoading)
+{
+    <Loader/>
+}
+else
+{
+    <div class="p-6 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-6 flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-900">Trip Management</h1>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+                           OnClick="OpenCreateDialog" Class="bg-blue-600 hover:bg-blue-700">
+                    Create Trip
+                </MudButton>
+            </div>
+
+            <MudCard Class="shadow-lg">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Trip Records</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTable Items="@trips" Hover="true" Striped="true" Loading="@isLoading">
+                        <HeaderContent>
+                            <MudTh>Driver</MudTh>
+                            <MudTh>Tricycle</MudTh>
+                            <MudTh>Passenger</MudTh>
+                            <MudTh>Route</MudTh>
+                            <MudTh>Distance</MudTh>
+                            <MudTh>Fare</MudTh>
+                            <MudTh>Date</MudTh>
+                            <MudTh>Status</MudTh>
+                            <MudTh>Actions</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Driver">@context.DriverName</MudTd>
+                            <MudTd DataLabel="Tricycle">@context.TricycleNumber</MudTd>
+                            <MudTd DataLabel="Passenger">@context.PassengerName</MudTd>
+                            <MudTd DataLabel="Route">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">@context.PickupLocation</span>
+                                    <span class="text-gray-400">→</span>
+                                    <span class="text-sm">@context.DropoffLocation</span>
+                                </div>
+                            </MudTd>
+                            <MudTd DataLabel="Distance">@context.Distance.ToString("F1") km</MudTd>
+                            <MudTd DataLabel="Fare">₱@context.TotalFare.ToString("F2")</MudTd>
+                            <MudTd DataLabel="Date">@context.TripDate.ToString("MMM dd, yyyy HH:mm")</MudTd>
+                            <MudTd DataLabel="Status">
+                                <MudChip T="string" Color="Color.Success" Size="Size.Small">@context.Status</MudChip>
+                            </MudTd>
+                            <MudTd DataLabel="Actions">
+                                <MudButton Size="Size.Small" Variant="Variant.Text" Color="Color.Primary"
+                                           StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditDialog(context)">
+                                    Edit
+                                </MudButton>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+}
+
+@code {
+    private List<TripDto> trips = new();
+    private List<DriverDto> drivers = new();
+    private List<PassengerDto> passengers = new();
+    private bool isLoading = false;
+    private bool saving = false;
+    private bool showDialog = false;
+    private bool isEditing = false;
+    private FareCalculationDto? fareCalculation;
+    private CreateTripCommand tripModel = new();
+    private MudForm? form;
+    private CreateTripValidator validator = new();
+
+    private DialogOptions dialogOptions = new() { MaxWidth = MaxWidth.Large, FullWidth = true };
+
+    private Func<object, string, Task<IEnumerable<string>>> validationFunc => async (model, propertyName) =>
+    {
+        var result = await validator.ValidateAsync(FluentValidation.ValidationContext<CreateTripCommand>
+            .CreateWithOptions((CreateTripCommand) model, x => x.IncludeProperties(propertyName)));
+        return result.IsValid ? Array.Empty<string>() : result.Errors.Select(e => e.ErrorMessage);
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+        isLoading = false;
+    }
+
+    private async Task LoadData()
+    {
+        isLoading = true;
+        try
+        {
+            var tripTask = Trip.GetAllTripsAsync();
+            var driverTask = Driver.GetAllDriversAsync();
+            var passengerTask = Passenger.GetAllPassengersAsync();
+
+            await Task.WhenAll(tripTask, driverTask, passengerTask);
+            await InvokeAsync(StateHasChanged);
+
+            trips = tripTask.Result;
+            drivers = driverTask.Result.Where(d => d.IsActive).ToList();
+            passengers = passengerTask.Result.Where(p => p.IsActive).ToList();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading data: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async void OpenCreateDialog()
+    {
+        var parameters = new DialogParameters
+    {
+        { "TripModel", new CreateTripCommand() },
+        { "IsEditing", false },
+        { "Drivers", drivers },
+        { "Passengers", passengers }
+    };
+
+        var options = new DialogOptions { MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<TripDialog>("Create Trip", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            var tripData = (CreateTripCommand) result.Data;
+            await Trip.CreateTripAsync(tripData);
+            Snackbar.Add("Trip created successfully", Severity.Success);
+            await LoadData();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async void OpenEditDialog(TripDto trip)
+    {
+        var model = new CreateTripCommand
+        {
+            DriverId = trip.DriverId,
+            PassengerId = trip.PassengerId,
+            PickupLocation = trip.PickupLocation,
+            DropoffLocation = trip.DropoffLocation,
+            Distance = trip.Distance
+        };
+
+        var parameters = new DialogParameters
+    {
+        { "TripModel", model },
+        { "IsEditing", true },
+        { "Drivers", drivers },
+        { "Passengers", passengers }
+    };
+
+        var options = new DialogOptions { MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<TripDialog>("Edit Trip", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            // Implement your update logic here
+            Snackbar.Add("Trip updated successfully", Severity.Success);
+            await LoadData();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+    private void CloseDialog()
+    {
+        showDialog = false;
+        tripModel = new CreateTripCommand();
+        fareCalculation = null;
+        isEditing = false;
+    }
+
+    private async Task OnDistanceChanged()
+    {
+        if (tripModel.Distance > 0)
+        {
+            await CalculateFare();
+        }
+        else
+        {
+            fareCalculation = null;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task CalculateFare()
+    {
+        if (tripModel.Distance > 0)
+        {
+            try
+            {
+                fareCalculation = await Fare.CalculateFareAsync(tripModel.Distance);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error calculating fare: {ex.Message}", Severity.Error);
+            }
+        }
+    }
+
+    private async Task SaveTrip()
+    {
+        if (form != null)
+        {
+            await form.Validate();
+            if (!form.IsValid)
+                return;
+        }
+
+        saving = true;
+        try
+        {
+            if (isEditing)
+            {
+                // You'll need to implement UpdateTripAsync method in your service
+                // await Trip.UpdateTripAsync(tripModel);
+                Snackbar.Add("Trip updated successfully", Severity.Success);
+            }
+            else
+            {
+                await Trip.CreateTripAsync(tripModel);
+                Snackbar.Add("Trip created successfully", Severity.Success);
+            }
+
+            CloseDialog();
+            await LoadData();
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error {(isEditing ? "updating" : "creating")} trip: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+}
