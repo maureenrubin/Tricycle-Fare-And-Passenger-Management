@@ -1,0 +1,147 @@
+﻿@page "/"
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@attribute [AllowAnonymous]
+@rendermode InteractiveServer
+
+<div class="login-container">
+   
+    <MudCard Class="left-side">
+        <img src="images/login-side.jpg" alt="Login Image" class="side-image" />
+   </MudCard>
+
+    <MudCard Class="login-card">
+        <MudCardContent>
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold">Sign into your Account</h2>
+                <p class="text-sm text-gray-600 mt-1">
+                    Or
+                    <MudLink Href="/register" Class="text-primary font-medium ml-1">
+                        create a new account
+                    </MudLink>
+                </p>
+            </div>
+
+            <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+                <DataAnnotationsValidator />
+
+                <MudTextField @bind-Value="loginModel.Email"
+                              Label="Email Address"
+                              Variant="Variant.Outlined"
+                              InputType="InputType.Email"
+                              Adornment="Adornment.Start"
+                              Class="w-full mb-4"
+                              For="@(() => loginModel.Email)" />
+
+                <MudTextField @bind-Value="loginModel.Password"
+                              Label="Password"
+                              Variant="Variant.Outlined"
+                              InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                              Adornment="Adornment.End"
+                              AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                              OnAdornmentClick="@(() => _showPassword = !_showPassword)"
+                              Class="w-full mb-4"
+                              For="@(() => loginModel.Password)" />
+
+                <MudGrid Class="mb-4" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                    <MudItem xs="6">
+                        <MudCheckBox @bind-Value="loginModel.RememberMe"
+                                     Label="Remember me"
+                                     Color="Color.Primary" />
+                    </MudItem>
+                    <MudItem xs="6" Class="d-flex justify-end">
+                        <MudLink Href="/forgot-password" Class="text-sm text-primary">
+                            Forgot your password?
+                        </MudLink>
+                    </MudItem>
+                </MudGrid>
+
+                <MudButton ButtonType="ButtonType.Submit"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           Class="login-button"
+                           Disabled="@_isLoading">
+                    @if (_isLoading)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                        <span>Signing in...</span>
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Login" Class="mr-2" />
+                        <span>SIGN IN</span>
+                    }
+                </MudButton>
+
+            </EditForm>
+
+
+            <!-- Social Login Options -->
+            <div class="d-flex justify-content-center gap-2 mt-7">
+                <MudButton Variant="Variant.Outlined" Class="flex-grow-0">
+                    <MudIcon Icon="@Icons.Custom.Brands.Google" Class="mr-2" />
+                    Google
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Class="flex-grow-0">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Class="mr-2" />
+                    Facebook
+                </MudButton>
+            </div>
+
+        </MudCardContent>
+    </MudCard>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private bool _showPassword = false;
+    private bool _isLoading = false;
+    private bool _hasRendered = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        Console.WriteLine($"User authenticated: {isAuthenticated}");
+    }
+
+    private async Task HandleLogin()
+    {
+        _isLoading = true;
+        try
+        {
+            var result = await AuthService.LoginAsync(loginModel);
+            if (result.Success)
+            {
+                Snackbar.Add($"Welcome back, {result.User?.FullName}!", Severity.Success);
+                Navigation.NavigateTo("/dashboard");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    Snackbar.Add(error, Severity.Error);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"An error occurred: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_hasRendered)
+        {
+            _hasRendered = true;
+            bool isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            StateHasChanged();
+        }
+    }
+}
