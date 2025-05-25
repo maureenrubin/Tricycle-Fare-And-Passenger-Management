@@ -24,12 +24,14 @@ namespace TricycleFareAndPassengerManagement.Client
 
         private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<AuthTokenHandler>();
             services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
+            services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             services.AddScoped<CustomAuthStateProvider>();
+            services.AddScoped<AuthorizationDelegatingHandler>();
             services.AddScoped<AuthenticationStateProvider>(provider =>
                 provider.GetRequiredService<CustomAuthStateProvider>());
 
+            services.AddScoped<ISecureStorageService, SecureStorageService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IDriverClientService, DriverClientService>();
             services.AddScoped<IPassengerClientService, PassengerClientService>();

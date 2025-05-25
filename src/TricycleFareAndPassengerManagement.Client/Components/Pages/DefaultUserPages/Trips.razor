@@ -7,7 +7,7 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @layout DefaultUserLayout
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @if (isLoading)
 {

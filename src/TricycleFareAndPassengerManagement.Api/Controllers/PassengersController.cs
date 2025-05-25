@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TricycleFareAndPassengerManagement.Application.Common.DTOs;
 using TricycleFareAndPassengerManagement.Application.Features.Passengers.Commands;

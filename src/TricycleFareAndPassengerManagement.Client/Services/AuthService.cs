@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using TricycleFareAndPassengerManagement.Client.Models;
 using TricycleFareAndPassengerManagement.Client.Services.Interfaces;
 
@@ -13,21 +14,27 @@ namespace TricycleFareAndPassengerManagement.Client.Services
         private const string TokenKey = "authToken";
         private const string UserKey = "currentUser";
         private readonly HttpClient _httpClient;
+        private readonly ILogger<AuthService> _logger;
         private readonly ILocalStorageService _localStorage;
         private readonly NavigationManager _navigationManager;
 
         #endregion Fields
 
-        #region Public Constructors
+        #region Constructors
 
-        public AuthService(HttpClient httpClient, ILocalStorageService localStorage, NavigationManager navigationManager)
+        public AuthService(IHttpClientFactory httpClientFactory,
+            ILogger<AuthService> logger,
+            IServiceProvider serviceProvider,
+            ILocalStorageService localStorage,
+            NavigationManager navigationManager)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("API");
+            _logger = logger;
             _localStorage = localStorage;
             _navigationManager = navigationManager;
         }
 
-        #endregion Public Constructors
+        #endregion Constructors
 
         #region Events
 
@@ -41,6 +48,8 @@ namespace TricycleFareAndPassengerManagement.Client.Services
         {
             try
             {
+                _logger.LogInformation("Starting login for email: {Email}", model.Email);
+
                 var response = await _httpClient.PostAsJsonAsync("/api/auth/login", new
                 {
                     email = model.Email,
@@ -50,20 +59,32 @@ namespace TricycleFareAndPassengerManagement.Client.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<AuthResult>();
-                    if (result != null && result.Success && !string.IsNullOrEmpty(result.Token))
-                    {
-                        await _localStorage.SetItemAsync(TokenKey, result.Token);
-                        await _localStorage.SetItemAsync(UserKey, result.User);
 
+                    if (result != null && result.Success && !string.IsNullOrEmpty(result.Token) && result.User != null)
+                    {
+                        // Store token and user data
+                        await _localStorage.SetItemAsync(TokenKey, result.Token);
+                        var userJson = JsonSerializer.Serialize(result.User);
+                        await _localStorage.SetItemAsync(UserKey, userJson);
+
+                        // Set authorization header
                         _httpClient.DefaultRequestHeaders.Authorization =
                             new AuthenticationHeaderValue("Bearer", result.Token);
 
-                        AuthStateChanged?.Invoke(true);
+                        // Notify auth state change via the provider
+                        if (AuthStateChanged != null)
+                        {
+                            AuthStateChanged.Invoke(true);
+                        }
+
+                        _logger.LogInformation("Login successful for user: {UserName}", result.User.FullName);
                         return result;
                     }
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
+                _logger.LogError("Login failed with status {StatusCode}: {Error}", response.StatusCode, errorContent);
+
                 return new AuthResult
                 {
                     Success = false,
@@ -72,6 +93,7 @@ namespace TricycleFareAndPassengerManagement.Client.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Exception during login");
                 return new AuthResult
                 {
                     Success = false,
@@ -94,10 +116,14 @@ namespace TricycleFareAndPassengerManagement.Client.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<AuthResult>();
-                    if (result != null && result.Success && !string.IsNullOrEmpty(result.Token))
+                    if (result != null && result.Success && !string.IsNullOrEmpty(result.Token) && result.User != null)
                     {
+                        // Store token
                         await _localStorage.SetItemAsync(TokenKey, result.Token);
-                        await _localStorage.SetItemAsync(UserKey, result.User);
+
+                        // Store user data consistently using System.Text.Json
+                        var userJson = JsonSerializer.Serialize(result.User);
+                        await _localStorage.SetItemAsync(UserKey, userJson);
 
                         _httpClient.DefaultRequestHeaders.Authorization =
                             new AuthenticationHeaderValue("Bearer", result.Token);
@@ -116,6 +142,7 @@ namespace TricycleFareAndPassengerManagement.Client.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Exception during registration");
                 return new AuthResult
                 {
                     Success = false,
@@ -131,29 +158,43 @@ namespace TricycleFareAndPassengerManagement.Client.Services
                 if (!await IsAuthenticatedAsync())
                     return null;
 
-                // Try to get user from local storage first
-                var cachedUser = await _localStorage.GetItemAsync<UserDto>(UserKey);
-                if (cachedUser != null)
-                    return cachedUser;
+                // Try to get cached user data
+                var userJson = await _localStorage.GetItemAsync<string>(UserKey);
+                if (!string.IsNullOrEmpty(userJson))
+                {
+                    try
+                    {
+                        var cachedUser = JsonSerializer.Deserialize<UserDto>(userJson);
+                        if (cachedUser != null)
+                            return cachedUser;
+                    }
+                    catch (JsonException ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to deserialize cached user data");
+                        // Continue to fetch from API
+                    }
+                }
 
-                // If not in cache, get from API
-                var response = await _httpClient.GetAsync("/api/auth/me");
+                // Fetch from API if cache is empty or invalid
+                var response = await _httpClient.GetAsync("api/auth/me");
                 if (response.IsSuccessStatusCode)
                 {
                     var user = await response.Content.ReadFromJsonAsync<UserDto>();
                     if (user != null)
                     {
-                        await _localStorage.SetItemAsync(UserKey, user);
+                        // Cache the user data
+                        var userJsonToStore = JsonSerializer.Serialize(user);
+                        await _localStorage.SetItemAsync(UserKey, userJsonToStore);
                     }
                     return user;
                 }
 
-                // If API call fails, user might not be authenticated
                 await LogoutAsync();
                 return null;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Exception getting current user");
                 await LogoutAsync();
                 return null;
             }
@@ -161,29 +202,54 @@ namespace TricycleFareAndPassengerManagement.Client.Services
 
         public async Task LogoutAsync()
         {
-            await _localStorage.RemoveItemAsync(TokenKey);
-            await _localStorage.RemoveItemAsync(UserKey);
-            _httpClient.DefaultRequestHeaders.Authorization = null;
-            AuthStateChanged?.Invoke(false);
-            _navigationManager.NavigateTo("/login");
+            try
+            {
+                await _localStorage.RemoveItemAsync(TokenKey);
+                await _localStorage.RemoveItemAsync(UserKey);
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+
+                // Notify auth state change
+                AuthStateChanged?.Invoke(false);
+
+                _navigationManager.NavigateTo("/", forceLoad: true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception during logout");
+                // Still navigate even if there's an error
+                _navigationManager.NavigateTo("/", forceLoad: true);
+            }
         }
 
         public async Task<bool> IsAuthenticatedAsync()
         {
             try
             {
-                var token = await _localStorage.GetItemAsStringAsync(TokenKey);
+                var token = await _localStorage.GetItemAsync<string>(TokenKey);
                 return !string.IsNullOrEmpty(token);
             }
             catch (InvalidOperationException)
             {
                 return false;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception checking authentication status");
+                return false;
+            }
         }
 
         public async Task<string?> GetTokenAsync()
         {
-            return await _localStorage.GetItemAsStringAsync(TokenKey);
+            try
+            {
+                return await _localStorage.GetItemAsync<string>(TokenKey);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception getting token");
+                return null;
+            }
         }
 
         #endregion Public Methods

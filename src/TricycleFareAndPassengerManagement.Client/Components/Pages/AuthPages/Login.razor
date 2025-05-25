@@ -1,9 +1,11 @@
 ﻿@page "/"
 @inject IAuthService AuthService
+@inject CustomAuthStateProvider CustomAuthStateProvider
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
-@rendermode InteractiveServer
-
+@inject IJSRuntime JSRuntime
+@attribute [AllowAnonymous]
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @if (isLoading)
 {
@@ -106,57 +108,65 @@ else
     </MudContainer>
 }
 
-
 @code {
     private LoginModel loginModel = new();
+    private AuthResult authResult = new();
     private bool _showPassword = false;
     private bool isLoading = false;
     private bool _hasRendered = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
-        Console.WriteLine($"User authenticated: {isAuthenticated}");
-    }
+private async Task HandleLogin()
+{
+    isLoading = true;
+    await InvokeAsync(StateHasChanged);
 
-    private async Task HandleLogin()
+    try
     {
-        isLoading = true;
-        try
+        var result = await AuthService.LoginAsync(loginModel);
+
+        if (result?.Success == true && result.User != null)
         {
-            var result = await AuthService.LoginAsync(loginModel);
+            // Small delay to ensure localStorage is updated
+            await Task.Delay(200);
+
+            // Notify auth state provider
+            await CustomAuthStateProvider.NotifyUserAuthentication();
+
+            // Another small delay for auth state to propagate
+            await Task.Delay(300);
+
+            // Navigate without forceLoad to avoid server-side rendering issues
+            var role = result.User.Roles?.FirstOrDefault() ?? string.Empty;
             
-            if (result.Success)
+            if (role == "Admin")
             {
-                Snackbar.Add($"Welcome back, {result.User?.FullName}!", Severity.Success);
-                await Task.Delay(2000);
+                Navigation.NavigateTo("/admindashboard");
+            }
+            else if (role == "DefaultUser")
+            {
                 Navigation.NavigateTo("/userdashboard");
             }
             else
             {
-                foreach (var error in result.Errors)
-                {
-                    Snackbar.Add(error, Severity.Error);
-                }
+                Snackbar.Add($"Unrecognized role: {role}", Severity.Warning);
+                Navigation.NavigateTo("/");
             }
         }
-        catch (Exception ex)
+        else
         {
-            Snackbar.Add($"An error occurred: {ex.Message}", Severity.Error);
-        }
-        finally
-        {
-            isLoading = false;
+            var errorMessage = result?.Errors?.FirstOrDefault() ?? "Login failed";
+            Snackbar.Add(errorMessage, Severity.Error);
         }
     }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    catch (Exception ex)
     {
-        if (firstRender && !_hasRendered)
-        {
-            _hasRendered = true;
-            bool isAuthenticated = await AuthService.IsAuthenticatedAsync();
-            StateHasChanged();
-        }
+        await JSRuntime.InvokeVoidAsync("console.error", $"Login exception: {ex}");
+        Snackbar.Add($"An error occurred during login: {ex.Message}", Severity.Error);
     }
+    finally
+    {
+        isLoading = false;
+        await InvokeAsync(StateHasChanged);
+    }
+}
 }

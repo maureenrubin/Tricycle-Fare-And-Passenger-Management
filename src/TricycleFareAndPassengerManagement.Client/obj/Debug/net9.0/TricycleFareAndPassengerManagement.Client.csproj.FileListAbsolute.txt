@@ -1,5 +1,7 @@
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\appsettings.Development.json
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\appsettings.json
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\package-lock.json
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\package.json
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\TricycleFareAndPassengerManagement.Client.staticwebassets.runtime.json
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\TricycleFareAndPassengerManagement.Client.staticwebassets.endpoints.json
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\TricycleFareAndPassengerManagement.Client.exe
@@ -37,6 +39,7 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\Microsoft.JSInterop.dll
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\MudBlazor.dll
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\TricycleFareAndPassengerManagement.Application.dll
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\TricycleFareAndPassengerManagement.Domain.dll
@@ -50,6 +53,7 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\TricycleFareAndPassengerManagement.Client.MvcApplicationPartsAssemblyInfo.cache
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\TricycleFareAndPassengerManagement.Client.sourcelink.json
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\scopedcss\Shared\Loader.razor.rz.scp.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\scopedcss\bundle\TricycleFareAndPassengerManagement.Client.styles.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\scopedcss\projectbundle\TricycleFareAndPassengerManagement.Client.bundle.scp.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\tzxjg6is5z-qmvjbof2tn.gz
@@ -99,6 +103,11 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\m0o04z80cq-h1s4sie4z3.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\emxzv4uclb-4d85u1mtcx.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\yqjjpwkjsw-0j3bgjxly4.gz
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\j8fwmf066l-gnrfdilsk9.gz
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\1h26ee3hjn-dp5simxycy.gz
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\ywgqsi21pm-gnrfdilsk9.gz
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\5kn68ktnsy-87i7dlbtv8.gz
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\a2xxeqfzij-87i7dlbtv8.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\staticwebassets.build.json
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\staticwebassets.development.json
@@ -110,11 +119,3 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\TricycleFareAndPassengerManagement.Client.pdb
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\TricycleFareAndPassengerManagement.Client.genruntimeconfig.cache
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\ref\TricycleFareAndPassengerManagement.Client.dll
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\scopedcss\Shared\Loader.razor.rz.scp.css
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\5kn68ktnsy-87i7dlbtv8.gz
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\a2xxeqfzij-87i7dlbtv8.gz
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\package-lock.json
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\bin\Debug\net9.0\package.json
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\1h26ee3hjn-dp5simxycy.gz
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\ywgqsi21pm-gnrfdilsk9.gz
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\j8fwmf066l-gnrfdilsk9.gz
