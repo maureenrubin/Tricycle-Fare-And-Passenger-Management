@@ -102,7 +102,6 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\m0o04z80cq-h1s4sie4z3.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\emxzv4uclb-4d85u1mtcx.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\yqjjpwkjsw-0j3bgjxly4.gz
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\j8fwmf066l-gnrfdilsk9.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\1h26ee3hjn-dp5simxycy.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\ywgqsi21pm-gnrfdilsk9.gz
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\obj\Debug\net9.0\compressed\5kn68ktnsy-87i7dlbtv8.gz
