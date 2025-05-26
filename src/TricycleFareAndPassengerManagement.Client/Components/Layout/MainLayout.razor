@@ -10,6 +10,12 @@
 
 <div class="flex flex-col min-h-screen">
     <MudAppBar Class="app-bar px-2" Elevation="4">
+        <MudIconButton Color="Color.Inherit"
+                       Size="Size.Large"
+                       Class="d-flex text-white"
+                       Icon="@Icons.Material.Filled.Menu"
+                       OnClick="ToggleUtil.ToggleDrawer" />
+
         <MudContainer Class="d-none d-md-block ml-20">
             <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold mx-3">
                 Tricycle Fare and Passenger Management
@@ -40,6 +46,35 @@
             </button>
         </MudContainer>
     </MudAppBar>
+
+    <MudBreakpointProvider OnBreakpointChanged="ToggleUtil.OnBreakpointChanged">
+        <!-- Sidebar -->
+        <MudDrawer @bind-Open="ToggleUtil._drawerOpen"
+                   Anchor="Anchor.Left"
+                   Class="fixed-drawer mt-15"
+                   Height="130vh"
+                   Variant="@ToggleUtil._drawerVariant"
+                   Elevation="4">
+            <MudDrawerHeader>
+                <h4 class="mud-text-secondary font-bold text-2xl">TFPM</h4>
+            </MudDrawerHeader>
+
+            <MudNavMenu Class="drawer-list">
+
+                <MudDivider Class="" />
+
+                <MudNavLink Href="/admindashboard">Dashboard</MudNavLink>
+                <MudNavLink Href="/passengers">Passenger</MudNavLink>
+                <MudNavLink Href="/reports">Reports</MudNavLink>
+                <MudNavLink Href="/drivers">Drivers</MudNavLink>
+                <MudNavLink Href="/trips">Trips</MudNavLink>
+
+                <MudDivider Class="my-2" />
+
+                <MudNavLink Href="/">Logout</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+    </MudBreakpointProvider>
 
     <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
         <MudMainContent>

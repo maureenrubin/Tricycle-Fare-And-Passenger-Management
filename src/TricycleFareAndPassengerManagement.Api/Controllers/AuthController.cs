@@ -52,7 +52,6 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
         }
 
         [HttpGet("me")]
-        [Authorize]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -69,7 +68,6 @@ namespace TricycleFareAndPassengerManagement.Api.Controllers
         }
 
         [HttpGet("admin-only")]
-        [Authorize(Roles = "Admin")]
         public ActionResult<string> AdminOnly()
         {
             return Ok("This endpoint is only accessible to admins!");
