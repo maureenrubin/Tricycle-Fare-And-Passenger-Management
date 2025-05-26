@@ -24,7 +24,6 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\Tailwind\output.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
@@ -94,4 +93,3 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 wwwroot\output.css
-wwwroot\Tailwind\output.css

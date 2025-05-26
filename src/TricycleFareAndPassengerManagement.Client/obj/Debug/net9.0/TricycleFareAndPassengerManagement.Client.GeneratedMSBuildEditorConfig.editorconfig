@@ -47,20 +47,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblBhZ2VzXEFkbWluRGFzaGJvYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/AdminPages/Passengers.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblBhZ2VzXFBhc3NlbmdlcnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/AdminPages/Trips.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblBhZ2VzXFRyaXBzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/AuthPages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoUGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/AuthPages/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoUGFnZXNcUmVnaXN0ZXIucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/DefaultUserPages/Passengers.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZWZhdWx0VXNlclBhZ2VzXFBhc3NlbmdlcnMucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/DefaultUserPages/Trips.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZWZhdWx0VXNlclBhZ2VzXFRyaXBzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/DefaultUserPages/UserDashboard.razor]
