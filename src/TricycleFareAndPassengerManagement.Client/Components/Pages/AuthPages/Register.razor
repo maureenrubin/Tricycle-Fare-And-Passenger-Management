@@ -1,10 +1,11 @@
 ﻿@page "/register"
 @inject IAuthService AuthService
+@layout AuthLayout
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
 @rendermode InteractiveServer
 
-<div class="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">
             <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Size="Size.Large" Class="mx-auto h-12 w-12 text-purple-600" />
@@ -24,15 +25,14 @@
                 <EditForm Model="@registerModel" OnValidSubmit="@HandleRegister" FormName="RegisterForm">
                     <DataAnnotationsValidator />
                     
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-6 gap-3">
                             <MudTextField @bind-Value="registerModel.FullName"
-                                          Label="First Name"
+                                          Label="Full Name"
                                           Variant="Variant.Outlined"
                                           Adornment="Adornment.Start"
+                                          FullWidth="true"
                                           AdornmentIcon="@Icons.Material.Filled.Person"
                                           For="@(() => registerModel.FullName)" />
-                        </div>
 
                         <MudTextField @bind-Value="registerModel.Email"
                                       Label="Email Address"
@@ -40,7 +40,7 @@
                                       InputType="InputType.Email"
                                       Adornment="Adornment.Start"
                                       AdornmentIcon="@Icons.Material.Filled.Email"
-                                      Class="w-full"
+                                          FullWidth="true"
                                       For="@(() => registerModel.Email)" />
 
                         <MudTextField @bind-Value="registerModel.Password"
@@ -50,7 +50,7 @@
                                       Adornment="Adornment.End"
                                       AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
                                       OnAdornmentClick="@(() => _showPassword = !_showPassword)"
-                                      Class="w-full"
+                                          FullWidth="true"
                                       For="@(() => registerModel.Password)" />
 
                         <MudTextField @bind-Value="registerModel.ConfirmPassword"
@@ -60,23 +60,14 @@
                                       Adornment="Adornment.End"
                                       AdornmentIcon="@(_showConfirmPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
                                       OnAdornmentClick="@(() => _showConfirmPassword = !_showConfirmPassword)"
-                                      Class="w-full"
+                                          FullWidth="true"
                                       For="@(() => registerModel.ConfirmPassword)" />
                         <MudButton ButtonType="ButtonType.Submit"
                                    Variant="Variant.Filled"
                                    Color="Color.Primary"
                                    Size="Size.Large"
                                    Class="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform transition-all duration-200 hover:scale-105">
-                            @if (_isLoading)
-                            {
-                                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
-                                <span>Creating account...</span>
-                            }
-                            else
-                            {
-                                <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-2" />
-                                <span>Create Account</span>
-                            }
+                                Sign Up
                         </MudButton>
                     </div>
                 </EditForm>

@@ -10,164 +10,185 @@
 
 @if (isLoading)
 {
-    <Loader/>
+    <Loader />
 }
 else
 {
-    <MudContainer MaxWidth="MaxWidth.Large">
-        <div class="min-h-screen flex items-center justify-center py-7 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-lg w-full space-y-8">
+    <div class="min-h-screen flex">
+        <div class="hidden lg:flex lg:w-1/2 xl:w-3/5 relative overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                 style="background-image: url('Images/TFPM.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh;">
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50 p-6 sm:p-8 lg:p-12">
+            <div class="w-full max-w-md space-y-8">
                 <div class="text-center">
-                    <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Class="mx-auto h-12 w-12 text-indigo-600" />
-                    <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                    <div class="mx-auto w-16 h-16 flex items-center justify-center mb-6">
+                        <MudIcon Icon="@Icons.Material.Filled.Lock" Color="Color.Primary" Size="Size.Large" Class="text-white" />
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">
                         Sign in to your account
                     </h2>
-                    <p class="mt-2 text-sm text-gray-600">
+                    <p class="text-sm text-gray-600">
                         Or
-                        <MudLink Href="/register" Class="font-medium text-indigo-600 hover:text-indigo-500 ml-1">
-                            create a new account
+                        <MudLink Href="/register" Class="font-semibold text-indigo-600 hover:text-indigo-500 ml-1 transition-colors">
+                            Sign Up
                         </MudLink>
                     </p>
                 </div>
 
-                <MudCard Class="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+                <!-- Login Form Card -->
+                <MudCard Class="shadow-2xl border-0 bg-white/90 backdrop-blur-md rounded-2xl">
                     <MudCardContent Class="p-8">
                         <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin" FormName="LoginForm">
                             <DataAnnotationsValidator />
-                    
+
                             <div class="space-y-6">
-                                <MudTextField @bind-Value="loginModel.Email"
-                                              Label="Email Address"
-                                              Variant="Variant.Outlined"
-                                              InputType="InputType.Email"
-                                              Adornment="Adornment.Start"
-                                              AdornmentIcon="@Icons.Material.Filled.Email"
-                                              Class="w-full"
-                                              For="@(() => loginModel.Email)" />
+                                <!-- Email Field -->
+                                <div class="relative">
+                                    <MudTextField @bind-Value="loginModel.Email"
+                                                  Label="Email Address"
+                                                  Variant="Variant.Outlined"
+                                                  InputType="InputType.Email"
+                                                  Adornment="Adornment.Start"
+                                                  AdornmentIcon="@Icons.Material.Filled.Email"
+                                                  AdornmentColor="Color.Primary"
+                                                  FullWidth="true"
+                                                  For="@(() => loginModel.Email)" />
+                                </div>
 
-                                <MudTextField @bind-Value="loginModel.Password"
-                                              Label="Password"
-                                              Variant="Variant.Outlined"
-                                              InputType="@(_showPassword ? InputType.Text : InputType.Password)"
-                                              Adornment="Adornment.End"
-                                              AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
-                                              OnAdornmentClick="@(() => _showPassword = !_showPassword)"
-                                              Class="w-full"
-                                              For="@(() => loginModel.Password)" />
+                                <!-- Password Field -->
+                                <div class="relative">
+                                    <MudTextField @bind-Value="loginModel.Password"
+                                                  Label="Password"
+                                                  Variant="Variant.Outlined"
+                                                  InputType="@ShowPasswordUtil.InputType"
+                                                  Adornment="Adornment.End"
+                                                  AdornmentIcon="@ShowPasswordUtil.Icon"
+                                                  AdornmentColor="Color.Primary"
+                                                  OnAdornmentClick="ShowPasswordUtil.Toggle"
+                                                  FullWidth="true"
+                                                  For="@(() => loginModel.Password)" />
+                                </div>
 
+                                <!-- Remember Me & Forgot Password -->
                                 <div class="flex items-center justify-between">
                                     <MudCheckBox @bind-Value="loginModel.RememberMe"
                                                  Label="Remember me"
-                                                 Color="Color.Primary" />
-                            
-                                    <MudLink Href="/forgot-password" Class="text-sm text-indigo-600 hover:text-indigo-500">
-                                        Forgot your password?
+                                                 Color="Color.Primary"
+                                                 Class="text-sm" />
+
+                                    <MudLink Href="/forgot-password"
+                                             Class="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                                        Forgot password?
                                     </MudLink>
                                 </div>
 
+                                <!-- Sign In Button -->
                                 <MudButton ButtonType="ButtonType.Submit"
                                            Variant="Variant.Filled"
                                            Color="Color.Primary"
                                            Size="Size.Large"
-                                           Class="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transform transition-all duration-200 hover:scale-105"
-                                           Disabled="@isLoading">
-                                           <MudIcon Icon="@Icons.Material.Filled.Login" Class="mr-2" />
-                                           <span>Sign in</span>
-                                </MudButton>
+                                           Class="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform transition-all duration-200 hover:scale-[1.02]">
+                               Sign In
+                                       </MudButton>
                             </div>
                         </EditForm>
                     </MudCardContent>
                 </MudCard>
 
-                <!-- Social Login Options -->
-                <div class="mt-6">
+                <!-- Social Login Section -->
+                <div class="space-y-4">
                     <div class="relative">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-gray-300"></div>
                         </div>
                         <div class="relative flex justify-center text-sm">
-                            <span class="px-2 bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-500">Or continue with</span>
+                            <span class="px-4 bg-gradient-to-br from-slate-50 to-blue-50 text-gray-500 font-medium">
+                                Or continue with
+                            </span>
                         </div>
                     </div>
 
-                    <div class="mt-6 grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-2 gap-3">
                         <MudButton Variant="Variant.Outlined"
-                                   Class="w-full border-gray-300 hover:bg-gray-50 transition-colors duration-200">
-                            <MudIcon Icon="@Icons.Custom.Brands.Google" Class="mr-2" />
-                            Google
+                                   Class="w-full h-11 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 rounded-lg">
+                            <MudIcon Icon="@Icons.Custom.Brands.Google" Class="mr-2 text-red-500" />
+                            <span class="font-medium">Google</span>
                         </MudButton>
 
                         <MudButton Variant="Variant.Outlined"
-                                   Class="w-full border-gray-300 hover:bg-gray-50 transition-colors duration-200">
-                            <MudIcon Icon="@Icons.Custom.Brands.Microsoft" Class="mr-2" />
-                            Microsoft
+                                   Class="w-full h-11 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 rounded-lg">
+                            <MudIcon Icon="@Icons.Custom.Brands.Microsoft" Class="mr-2 text-blue-500" />
+                            <span class="font-medium">Microsoft</span>
                         </MudButton>
                     </div>
                 </div>
             </div>
         </div>
-    </MudContainer>
+    </div>
 }
+
 
 @code {
     private LoginModel loginModel = new();
     private AuthResult authResult = new();
-    private bool _showPassword = false;
     private bool isLoading = false;
     private bool _hasRendered = false;
 
-private async Task HandleLogin()
-{
-    isLoading = true;
-    await InvokeAsync(StateHasChanged);
-
-    try
+    private async Task HandleLogin()
     {
-        var result = await AuthService.LoginAsync(loginModel);
+        isLoading = true;
+        await InvokeAsync(StateHasChanged);
 
-        if (result?.Success == true && result.User != null)
+        try
         {
-            // Small delay to ensure localStorage is updated
-            await Task.Delay(200);
+            var result = await AuthService.LoginAsync(loginModel);
 
-            // Notify auth state provider
-            await CustomAuthStateProvider.NotifyUserAuthentication();
-
-            // Another small delay for auth state to propagate
-            await Task.Delay(300);
-
-            // Navigate without forceLoad to avoid server-side rendering issues
-            var role = result.User.Roles?.FirstOrDefault() ?? string.Empty;
-            
-            if (role == "Admin")
+            if (result?.Success == true && result.User != null)
             {
-                Navigation.NavigateTo("/admindashboard");
-            }
-            else if (role == "DefaultUser")
-            {
-                Navigation.NavigateTo("/userdashboard");
+                // Small delay to ensure localStorage is updated
+                await Task.Delay(200);
+
+                // Notify auth state provider
+                await CustomAuthStateProvider.NotifyUserAuthentication();
+
+                // Another small delay for auth state to propagate
+                await Task.Delay(300);
+
+                // Navigate without forceLoad to avoid server-side rendering issues
+                var role = result.User.Roles?.FirstOrDefault() ?? string.Empty;
+
+                if (role == "Admin")
+                {
+                    Navigation.NavigateTo("/admindashboard");
+                }
+                else if (role == "DefaultUser")
+                {
+                    Navigation.NavigateTo("/userdashboard");
+                }
+                else
+                {
+                    Snackbar.Add($"Unrecognized role: {role}", Severity.Warning);
+                    Navigation.NavigateTo("/");
+                }
             }
             else
             {
-                Snackbar.Add($"Unrecognized role: {role}", Severity.Warning);
-                Navigation.NavigateTo("/");
+                var errorMessage = result?.Errors?.FirstOrDefault() ?? "Login failed";
+                Snackbar.Add(errorMessage, Severity.Error);
             }
         }
-        else
+        catch (Exception ex)
         {
-            var errorMessage = result?.Errors?.FirstOrDefault() ?? "Login failed";
-            Snackbar.Add(errorMessage, Severity.Error);
+            await JSRuntime.InvokeVoidAsync("console.error", $"Login exception: {ex}");
+            Snackbar.Add($"An error occurred during login: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+            await InvokeAsync(StateHasChanged);
         }
     }
-    catch (Exception ex)
-    {
-        await JSRuntime.InvokeVoidAsync("console.error", $"Login exception: {ex}");
-        Snackbar.Add($"An error occurred during login: {ex.Message}", Severity.Error);
-    }
-    finally
-    {
-        isLoading = false;
-        await InvokeAsync(StateHasChanged);
-    }
-}
 }

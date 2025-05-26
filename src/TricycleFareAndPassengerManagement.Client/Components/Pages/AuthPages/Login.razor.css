@@ -1,0 +1,17 @@
+﻿.mud-input-outlined .mud-input-adornment {
+    color: #6366f1;
+}
+
+.mud-button-filled-primary {
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+}
+
+    .mud-button-filled-primary:hover {
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+
+@media (max-width: 1024px) {
+    .min-h-screen {
+        min-height: 100vh;
+    }
+}

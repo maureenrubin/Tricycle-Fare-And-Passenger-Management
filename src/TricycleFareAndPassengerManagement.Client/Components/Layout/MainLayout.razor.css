@@ -9,29 +9,36 @@ button {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 2.5px;
-    font-weight: 500;
+    font-weight: 600;
     color: white;
-    background-color: #689064;
     border: none;
-    border-radius: 5px;
-    transition: all 0.3s ease 0s;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
     outline: none;
 }
 
     button:hover {
-        background-color: #23c483;
-        box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-        color: #fff;
-        transform: translateY(-7px);
+        background: linear-gradient(to right, #4338CA, #7C3AED);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        transform: scale(1.02);
     }
 
     button:active {
-        transform: translateY(-1px);
+        transform: scale(0.98);
     }
 
 main {
     flex: 1;
+}
+
+.fixed-drawer {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    z-index: 1100;
+    overflow-y: auto;
 }
 
 .sidebar {
