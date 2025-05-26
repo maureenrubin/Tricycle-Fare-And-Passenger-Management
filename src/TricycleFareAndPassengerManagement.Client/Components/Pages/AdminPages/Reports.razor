@@ -1,1 +1,83 @@
-﻿
+﻿@page "/reports"
+@using TricycleFareAndPassengerManagement.Application.Common.DTOs
+@inject IReportClientService ReportService
+@inject ISnackbar Snackbar
+@layout MainLayout
+@rendermode InteractiveServer
+
+
+@if (isLoading)
+{
+    <Loader />
+}
+else
+{
+    <div class="p-6 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-6 flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-900">Daily Reports</h1>
+            </div>
+            <MudCard Class="shadow-lg">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Daily Summary</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTable Items="@reports" Hover="true" Striped="true" Loading="@isLoading">
+                        <HeaderContent>
+                            <MudTh>Date</MudTh>
+                            <MudTh>Total Trips</MudTh>
+                            <MudTh>Total Revenue</MudTh>
+                            <MudTh>Total Distance</MudTh>
+                            <MudTh>Active Drivers</MudTh>
+                            <MudTh>Active Passengers</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Date">@context.Date.ToString("MMM dd, yyyy")</MudTd>
+                            <MudTd DataLabel="Total Trips">@context.TotalTrips</MudTd>
+                            <MudTd DataLabel="Total Revenue">₱@context.TotalRevenue.ToString("F2")</MudTd>
+                            <MudTd DataLabel="Total Distance">@context.TotalDistance.ToString("F2") km</MudTd>
+                            <MudTd DataLabel="Active Drivers">@context.ActiveDrivers</MudTd>
+                            <MudTd DataLabel="Active Passengers">@context.ActivePassengers</MudTd>
+                        </RowTemplate>
+                        <NoRecordsContent>
+                            <MudText>No reports available.</MudText>
+                        </NoRecordsContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+}
+@code {
+    private List<DailyReportDto> reports = new();
+    private bool isLoading = false;
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadReports();
+    }
+    private async Task LoadReports()
+    {
+        isLoading = true;
+        try
+        {
+            var report = await ReportService.GetDailyReportAsync(DateTime.Today);
+            reports = new List<DailyReportDto> { report };
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Failed to load reports: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+            await InvokeAsync(StateHasChanged);
+            
+
+
+        }
+      
+    }
+}
+
