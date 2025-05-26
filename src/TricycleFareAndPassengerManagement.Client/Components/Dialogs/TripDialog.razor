@@ -1,0 +1,135 @@
+﻿@inject IFareClientService Fare
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">@((IsEditing ? "Edit Trip" : "Create New Trip"))</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm @ref="form" Model="@TripModel" Validation="@(validationFunc)">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @bind-Value="TripModel.DriverId" Label="Select Driver" Variant="Variant.Outlined" Required="true">
+                        @foreach (var driver in Drivers)
+                        {
+                            <MudSelectItem Value="@driver.Id">@driver.FullName (@driver.TricycleNumber)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @bind-Value="TripModel.PassengerId" Label="Select Passenger" Variant="Variant.Outlined" Required="true">
+                        @foreach (var passenger in Passengers)
+                        {
+                            <MudSelectItem Value="@passenger.Id">@passenger.FullName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="TripModel.PickupLocation" Label="Pickup Location" Variant="Variant.Outlined" Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="TripModel.DropoffLocation" Label="Dropoff Location" Variant="Variant.Outlined" Required="true" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudNumericField @bind-Value="TripModel.Distance" Label="Distance (km)" Variant="Variant.Outlined"
+                                     Min="0.1" Max="100" Step="0.1" Required="true" />
+                </MudItem>
+                @if (FareCalculation != null)
+                {
+                    <MudItem xs="12">
+                        <MudCard Class="bg-blue-50 border border-blue-200">
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle2" Class="mb-2">Fare Calculation</MudText>
+                                <div class="space-y-1 text-sm">
+                                    <div class="flex justify-between">
+                                        <span>Base Fare:</span>
+                                        <span>₱@FareCalculation.BaseFare.ToString("F2")</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Distance (@FareCalculation.Distance km × ₱@FareCalculation.PerKmRate):</span>
+                                        <span>₱@((decimal) (FareCalculation.Distance * (double) FareCalculation.PerKmRate)))</span>
+                                    </div>
+                                    <hr class="my-2" />
+                                    <div class="flex justify-between font-semibold">
+                                        <span>Total Fare:</span>
+                                        <span>₱@FareCalculation.TotalFare.ToString("F2")</span>
+                                    </div>
+                                </div>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="CalculateFareAsync" Color="Color.Secondary" Variant="Variant.Outlined"
+                   Disabled="@(TripModel.Distance <= 0)">
+            Calculate Fare
+        </MudButton>
+        <MudButton OnClick="SaveAsync" Color="Color.Primary" Variant="Variant.Filled" Disabled="@Saving">
+            @if (Saving)
+            {
+                <MudProgressCircular Indeterminate="true" Size="Size.Small" />
+                <MudText Class="ms-2">@((IsEditing ? "Updating..." : "Creating..."))</MudText>
+            }
+            else
+            {
+                <MudText>@((IsEditing ? "Update Trip" : "Create Trip"))</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public bool IsEditing { get; set; }
+    [Parameter] public CreateTripCommand TripModel { get; set; } = new();
+    [Parameter] public List<DriverDto> Drivers { get; set; } = new();
+    [Parameter] public List<PassengerDto> Passengers { get; set; } = new();
+    [Parameter] public EventCallback<CreateTripCommand> OnSave { get; set; }
+
+    private FareCalculationDto? FareCalculation;
+    private MudForm? form;
+    private CreateTripValidator validator = new();
+    private bool Saving = false;
+
+    private Func<object, string, Task<IEnumerable<string>>> validationFunc =>
+        async (model, propertyName) =>
+        {
+            var result = await validator.ValidateAsync(
+                FluentValidation.ValidationContext<CreateTripCommand>.CreateWithOptions((CreateTripCommand) model, x => x.IncludeProperties(propertyName)));
+            return result.IsValid ? Array.Empty<string>() : result.Errors.Select(e => e.ErrorMessage);
+        };
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task CalculateFareAsync()
+    {
+        try
+        {
+            FareCalculation = await Fare.CalculateFareAsync(TripModel.Distance);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Fare calculation failed: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        if (form != null)
+        {
+            await form.Validate();
+            if (!form.IsValid)
+                return;
+        }
+
+        Saving = true;
+
+        await OnSave.InvokeAsync(TripModel);
+        MudDialog.Close(DialogResult.Ok(TripModel));
+    }
+}

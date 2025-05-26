@@ -1,0 +1,97 @@
+@inherits LayoutComponentBase
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<div class="flex flex-col min-h-screen">
+    <MudAppBar Class="app-bar px-2" Elevation="4">
+        <MudIconButton Color="Color.Inherit"
+                       Size="Size.Large"
+                       Class="d-flex text-white"
+                       Icon="@Icons.Material.Filled.Menu"
+                       OnClick="ToggleDrawer" />
+
+        <MudContainer Class="d-none d-md-block ml-20">
+            <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold">
+                Tricycle Fare and Passenger Management
+            </MudText>
+        </MudContainer>
+    </MudAppBar>
+
+    <MudBreakpointProvider OnBreakpointChanged="OnBreakpointChanged">
+        <!-- Sidebar -->
+        <MudDrawer @bind-Open="_drawerOpen"
+                   Anchor="Anchor.Left"
+                   Class="fixed-drawer mt-15"
+                   Height="130vh"
+                   Variant="@_drawerVariant"
+                   Elevation="4">
+            <MudDrawerHeader>
+                <h4 class="mud-text-secondary font-bold text-2xl">TFPM</h4>
+            </MudDrawerHeader>
+
+            <MudNavMenu Class="drawer-list">
+
+                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">
+                    System Admin
+                </MudText>
+
+                <MudDivider />
+
+                <MudNavLink Href="/admindashboard">Dashboard</MudNavLink>
+                <MudNavLink Href="/passengers">Passenger</MudNavLink>
+                <MudNavLink Href="/reports">Reports</MudNavLink>
+                <MudNavLink Href="/drivers">Drivers</MudNavLink>
+                <MudNavLink Href="/trips">Trips</MudNavLink>
+
+                <MudDivider Class="my-2" />
+
+                <MudNavLink Href="/">Logout</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+    </MudBreakpointProvider>
+
+    <div class="main-content-scroll">
+        @Body
+    </div>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code {
+
+    public DrawerVariant _drawerVariant = DrawerVariant.Persistent;
+    public bool _drawerOpen = true;
+
+    public void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+
+
+    public async Task OnBreakpointChanged(Breakpoint breakpoint)
+    {
+        if (breakpoint <= Breakpoint.Md)
+        {
+            _drawerVariant = DrawerVariant.Temporary;
+            _drawerOpen = false;
+        }
+        else
+        {
+            _drawerVariant = DrawerVariant.Persistent;
+            _drawerOpen = true;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+}

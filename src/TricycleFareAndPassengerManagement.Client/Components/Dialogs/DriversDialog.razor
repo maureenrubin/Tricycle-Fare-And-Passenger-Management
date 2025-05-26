@@ -1,0 +1,119 @@
+﻿@rendermode InteractiveServer
+@using TricycleFareAndPassengerManagement.Application.Features.Driver.Commands
+@using TricycleFareAndPassengerManagement.Client.Common.Validators.Driver
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form" Model="@CreateModel" Validation="@ValidationFunc" ValidationDelay="0">
+            <MudContainer Style="max-width: none; padding: 0;">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="CreateModel.FullName"
+                                      For="@(() => CreateModel.FullName)"
+                                      Label="Full Name"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Required="true"
+                                      Immediate="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <MudTextField @bind-Value="CreateModel.LicenseNumber"
+                                      For="@(() => CreateModel.LicenseNumber)"
+                                      Label="License Number"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Required="true"
+                                      Immediate="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <MudTextField @bind-Value="CreateModel.PhoneNumber"
+                                      For="@(() => CreateModel.PhoneNumber)"
+                                      Label="Phone Number"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Required="true"
+                                      Immediate="true" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="CreateModel.TricycleNumber"
+                                      For="@(() => CreateModel.TricycleNumber)"
+                                      Label="Tricycle Number"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Required="true"
+                                      Immediate="true" />
+                    </MudItem>
+
+                    @if (IsEditing && UpdateModel != null)
+                    {
+                        <MudItem xs="12">
+                            <MudSwitch @bind-Value="UpdateModel.IsActive" Label="Active" Color="Color.Primary" />
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudContainer>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Save" Disabled="@saving">
+            @if (saving)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@(IsEditing ? "Updating..." : "Creating...")</MudText>
+            }
+            else
+            {
+                <MudText>@(IsEditing ? "Update Driver" : "Create Driver")</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public CreateDriverCommand CreateModel { get; set; } = new();
+    [Parameter] public UpdateDriverCommand? UpdateModel { get; set; }
+    [Parameter] public bool IsEditing { get; set; }
+    [Parameter] public int? DriverId { get; set; }
+    [Parameter] public List<DriverDto> Drivers { get; set; } = new();
+    [Parameter] public Func<object, string, Task<IEnumerable<string>>> ValidationFunc { get; set; } = default!;
+
+    private MudForm? form;
+    private bool saving = false;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Save()
+    {
+        if (form != null)
+        {
+            await form.Validate();
+            if (!form.IsValid)
+                return;
+        }
+
+        saving = true;
+
+        try
+        {
+            if (IsEditing && UpdateModel != null)
+            {
+                UpdateModel.FullName = CreateModel.FullName;
+                UpdateModel.LicenseNumber = CreateModel.LicenseNumber;
+                UpdateModel.PhoneNumber = CreateModel.PhoneNumber;
+                UpdateModel.TricycleNumber = CreateModel.TricycleNumber;
+                MudDialog.Close(DialogResult.Ok(UpdateModel));
+            }
+
+            MudDialog.Close(DialogResult.Ok(CreateModel));
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+}

@@ -1,0 +1,9 @@
+﻿@page "/userdashboard"
+@layout DefaultUserLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<MudContainer>
+    <MudText>
+        Welcome to the Dashboard! This is a protected page that only authenticated users can access.
+    </MudText>
+</MudContainer>
