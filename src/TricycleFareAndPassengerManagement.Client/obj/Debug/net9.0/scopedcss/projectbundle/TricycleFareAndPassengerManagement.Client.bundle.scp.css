@@ -5,6 +5,14 @@
     flex-direction: column;
 }
 
+.main-content-scroll[b-8bzk26b8m2] {
+    padding: 1rem;
+    padding-top: 65px;
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
 button[b-8bzk26b8m2] {
     padding: 1.3em 3em;
     font-size: 12px;

@@ -14,7 +14,7 @@
 }
 else
 {
-    <div class="p-6 min-h-screen">
+    <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-8">
@@ -36,7 +36,7 @@ else
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-600">Total Drivers</p>
-                                <p class="text-2xl font-bold text-gray-900">@totalDrivers</p>
+                                <p class="text-2xl font-semibold text-gray-900">@totalDrivers</p>
                                 <p class="text-xs text-green-600">@activeDrivers active</p>
                             </div>
                         </div>
@@ -53,7 +53,7 @@ else
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-600">Total Passengers</p>
-                                <p class="text-2xl font-bold text-gray-900">@totalPassengers</p>
+                                <p class="text-2xl font-semibold text-gray-900">@totalPassengers</p>
                                 <p class="text-xs text-green-600">@activePassengers active</p>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ else
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-600">Total Trips</p>
-                                <p class="text-2xl font-bold text-gray-900">@totalTrips</p>
+                                <p class="text-2xl font-semibold text-gray-900">@totalTrips</p>
                                 <p class="text-xs text-blue-600">@todayTrips today</p>
                             </div>
                         </div>
@@ -87,7 +87,7 @@ else
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-600">Today's Revenue</p>
-                                <p class="text-2xl font-bold text-gray-900">₱@todayRevenue.ToString("F2")</p>
+                                <p class="text-2xl font-semibold text-gray-900">₱@todayRevenue.ToString("F2")</p>
                                 <p class="text-xs text-green-600">+@revenueGrowth.ToString("F1")% from yesterday</p>
                             </div>
                         </div>
@@ -222,7 +222,6 @@ else
                                    Class="h-16 text-left justify-start">
                             <div>
                                 <div class="font-semibold">Create Trip</div>
-                                <div class="text-sm opacity-75">Start a new journey</div>
                             </div>
                         </MudButton>
 
@@ -231,7 +230,6 @@ else
                                    Class="h-16 text-left justify-start">
                             <div>
                                 <div class="font-semibold">Add Driver</div>
-                                <div class="text-sm opacity-75">Register new driver</div>
                             </div>
                         </MudButton>
 
@@ -240,7 +238,6 @@ else
                                    Class="h-16 text-left justify-start">
                             <div>
                                 <div class="font-semibold">Add Passenger</div>
-                                <div class="text-sm opacity-75">Register new passenger</div>
                             </div>
                         </MudButton>
 
@@ -249,7 +246,6 @@ else
                                    Class="h-16 text-left justify-start">
                             <div>
                                 <div class="font-semibold">View Reports</div>
-                                <div class="text-sm opacity-75">Analytics & insights</div>
                             </div>
                         </MudButton>
                     </div>
@@ -260,7 +256,7 @@ else
 
             <div id="map" class="modern-map"></div>
         </div>
-    </div>
+    </MudContainer>
 }
 
 @code {

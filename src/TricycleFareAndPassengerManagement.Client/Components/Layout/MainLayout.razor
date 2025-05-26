@@ -14,52 +14,32 @@
                        Size="Size.Large"
                        Class="d-flex text-white"
                        Icon="@Icons.Material.Filled.Menu"
-                       OnClick="ToggleUtil.ToggleDrawer" />
+                       OnClick="ToggleDrawer" />
 
         <MudContainer Class="d-none d-md-block ml-20">
-            <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold mx-3">
+            <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold">
                 Tricycle Fare and Passenger Management
             </MudText>
         </MudContainer>
-
-        <MudSpacer />
-
-        <MudContainer Class="d-none d-md-flex gap-2">
-            <button Class="button" @onclick="NavigateToDashboard">
-                Dashboard
-            </button>
-
-            <button Class="button" @onclick="NavigateToPassenger">
-                Passenger
-            </button>
-
-            <button Class="button" @onclick="NavigateToReports">
-                Reports
-            </button>
-
-            <button Class="button" @onclick="NavigateToDriver">
-                Drivers
-            </button>
-
-            <button Class="button" @onclick="NavigateToTrip">
-                Trips
-            </button>
-        </MudContainer>
     </MudAppBar>
 
-    <MudBreakpointProvider OnBreakpointChanged="ToggleUtil.OnBreakpointChanged">
+    <MudBreakpointProvider OnBreakpointChanged="OnBreakpointChanged">
         <!-- Sidebar -->
-        <MudDrawer @bind-Open="ToggleUtil._drawerOpen"
+        <MudDrawer @bind-Open="_drawerOpen"
                    Anchor="Anchor.Left"
                    Class="fixed-drawer mt-15"
                    Height="130vh"
-                   Variant="@ToggleUtil._drawerVariant"
+                   Variant="@_drawerVariant"
                    Elevation="4">
             <MudDrawerHeader>
                 <h4 class="mud-text-secondary font-bold text-2xl">TFPM</h4>
             </MudDrawerHeader>
 
             <MudNavMenu Class="drawer-list">
+
+                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">
+                    System Admin
+                </MudText>
 
                 <MudDivider />
 
@@ -76,11 +56,9 @@
         </MudDrawer>
     </MudBreakpointProvider>
 
-    <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
-        <MudMainContent>
-            @Body
-        </MudMainContent>
-    </MudContainer>
+    <div class="main-content-scroll">
+        @Body
+    </div>
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>
@@ -90,28 +68,30 @@
 </div>
 
 @code {
-    private void NavigateToDashboard()
+
+    public DrawerVariant _drawerVariant = DrawerVariant.Persistent;
+    public bool _drawerOpen = true;
+
+    public void ToggleDrawer()
     {
-        Navigation.NavigateTo("/admindashboard");  
+        _drawerOpen = !_drawerOpen;
     }
 
-    private void NavigateToPassenger()
-    {
-        Navigation.NavigateTo("/passengers");
-    }
 
-    private void NavigateToDriver()
-    {
-        Navigation.NavigateTo("/drivers");
-    }
 
-    private void NavigateToTrip()
+    public async Task OnBreakpointChanged(Breakpoint breakpoint)
     {
-        Navigation.NavigateTo("/trips");
-    }
+        if (breakpoint <= Breakpoint.Md)
+        {
+            _drawerVariant = DrawerVariant.Temporary;
+            _drawerOpen = false;
+        }
+        else
+        {
+            _drawerVariant = DrawerVariant.Persistent;
+            _drawerOpen = true;
+        }
 
-    private void NavigateToReports()
-    {
-        Navigation.NavigateTo("/reports");
+        await InvokeAsync(StateHasChanged);
     }
 }
