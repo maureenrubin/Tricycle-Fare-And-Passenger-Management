@@ -45,7 +45,8 @@ namespace TricycleFareAndPassengerManagement.Application.Features.Reports.Querie
                 TotalTrips = trips.Count,
                 TotalRevenue = trips.Sum(t => t.TotalFare),
                 ActiveDrivers = activeDrivers,
-                ActivePassengers = activePassengers
+                ActivePassengers = activePassengers,
+                TotalDistance = trips.Sum(t => (decimal) t.Distance)
             };
         }
 

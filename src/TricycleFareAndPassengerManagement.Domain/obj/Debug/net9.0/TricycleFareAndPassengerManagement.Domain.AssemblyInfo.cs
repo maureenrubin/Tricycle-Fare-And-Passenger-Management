@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TricycleFareAndPassengerManagement.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37c6c12f208b8593274efd3cd4dd7b795c5bdad6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c98fd95178b1a25191d1a14c8fd3cbdae9c7728d")]
 [assembly: System.Reflection.AssemblyProductAttribute("TricycleFareAndPassengerManagement.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TricycleFareAndPassengerManagement.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

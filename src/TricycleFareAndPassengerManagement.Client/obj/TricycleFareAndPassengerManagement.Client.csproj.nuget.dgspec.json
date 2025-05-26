@@ -137,6 +137,10 @@
               "target": "Package",
               "version": "[12.0.0, )"
             },
+            "LeafletForBlazor": {
+              "target": "Package",
+              "version": "[2.2.4, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.5, )"

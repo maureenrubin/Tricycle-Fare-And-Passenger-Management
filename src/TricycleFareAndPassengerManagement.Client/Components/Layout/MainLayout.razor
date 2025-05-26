@@ -1,6 +1,6 @@
 @inherits LayoutComponentBase
 @rendermode InteractiveServer
-@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
 
 
 <MudThemeProvider />
@@ -8,48 +8,79 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudAppBar Class="app-bar px-2" Elevation="4">
-    <MudText Typo="Typo.h6">
-        Tricycle Fare and Passenger Management
-    </MudText>
+<div class="flex flex-col min-h-screen">
+    <MudAppBar Class="app-bar px-2" Elevation="4">
+        <MudContainer Class="d-none d-md-block ml-20">
+            <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold mx-3">
+                Tricycle Fare and Passenger Management
+            </MudText>
+        </MudContainer>
 
-    <MudNavMenu Class="d-flex ml-10" Style="gap: 1rem;">
-        <MudNavLink Href="/admindashboard" Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All">
-            Dashboard
-        </MudNavLink>
+        <MudSpacer />
 
-        <MudNavLink Href="/passengers" Icon="@Icons.Material.Filled.People"
-                    Style="white-space: nowrap;">
-            Passenger List
-        </MudNavLink>
+        <MudContainer Class="d-none d-md-flex gap-2">
+            <button Class="button" @onclick="NavigateToDashboard">
+                Dashboard
+            </button>
 
-        <MudNavLink Href="/reports" Icon="@Icons.Material.Filled.History"
-                    Style="white-space: nowrap;">
-            Daily Reports
-        </MudNavLink>
+            <button Class="button" @onclick="NavigateToPassenger">
+                Passenger
+            </button>
 
-        <MudNavLink Href="/drivers" Icon="@Icons.Material.Filled.DirectionsBus">
-            Drivers
-        </MudNavLink>
+            <button Class="button" @onclick="NavigateToReports">
+                Reports
+            </button>
 
+            <button Class="button" @onclick="NavigateToDriver">
+                Drivers
+            </button>
 
-    </MudNavMenu>
-</MudAppBar>
+            <button Class="button" @onclick="NavigateToTrip">
+                Trips
+            </button>
+        </MudContainer>
+    </MudAppBar>
 
+    <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
+        <MudMainContent>
+            @Body
+        </MudMainContent>
 
-<MudMainContent>
-    @Body  <!-- This renders the AdminDashboard content or other pages -->
-</MudMainContent>
-
-
-<MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
-    <MudMainContent >
-        @Body
-    </MudMainContent>
-</MudContainer>
+        <footer class="bg-gray-900 text-white text-center py-2 mt-auto hidden sm:block">
+            <p>&copy; @DateTime.UtcNow.Year Tricycle Fare and Passenger Management</p>
+        </footer>
+    </MudContainer>
+</div>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private void NavigateToDashboard()
+    {
+        Navigation.NavigateTo("/admindashboard");  
+    }
+
+    private void NavigateToPassenger()
+    {
+        Navigation.NavigateTo("/passengers");
+    }
+
+    private void NavigateToDriver()
+    {
+        Navigation.NavigateTo("/drivers");
+    }
+
+    private void NavigateToTrip()
+    {
+        Navigation.NavigateTo("/trips");
+    }
+
+    private void NavigateToReports()
+    {
+        Navigation.NavigateTo("/reports");
+    }
+}

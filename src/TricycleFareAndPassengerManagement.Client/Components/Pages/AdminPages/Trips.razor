@@ -6,7 +6,7 @@
 @inject IFareClientService Fare
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
-@layout DefaultUserLayout
+@layout MainLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @if (isLoading)
@@ -15,7 +15,7 @@
 }
 else
 {
-    <div class="p-6 bg-gray-50 min-h-screen">
+    <div class="p-6 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <div class="mb-6 flex justify-between items-center">
                 <h1 class="text-3xl font-bold text-gray-900">Trip Management</h1>

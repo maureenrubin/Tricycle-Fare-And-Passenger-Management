@@ -40,6 +40,7 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\js\map.js
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\output.css
@@ -48,6 +49,7 @@ C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManag
 wwwroot\app.css
 wwwroot\favicon.png
 wwwroot\input.css
+wwwroot\js\map.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

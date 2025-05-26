@@ -2,8 +2,8 @@
 @inject IPassengerClientService TricycleService
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
-@layout DefaultUserLayout
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@layout MainLayout
+@rendermode InteractiveServer
 
 
 @if (isLoading)
@@ -12,7 +12,7 @@
 }
 else
 {
-    <div class="p-6 bg-gray-50 min-h-screen">
+    <div class="p-6 min-h-screen">
     <div class="max-w-7xl mx-auto">
         <div class="mb-6 flex justify-between items-center">
             <h1 class="text-3xl font-bold text-gray-900">Passenger Management</h1>
@@ -199,47 +199,11 @@ else
                 Snackbar.Add("Passenger updated successfully", Severity.Success);
                 await LoadPassengers();
                 await InvokeAsync(StateHasChanged);
-
             }
             catch (Exception ex)
             {
                 Snackbar.Add($"Error updating passenger: {ex.Message}", Severity.Error);
             }
-        }
-    }
-
-    private async Task OnDialogSaved(bool saved)
-    {
-        if (saved)
-        {
-            try
-            {
-                if (isEdit)
-                {
-                    updatePassengerModel.FullName = passengerModel.FullName;
-                    updatePassengerModel.PhoneNumber = passengerModel.PhoneNumber;
-
-                    await TricycleService.UpdatePassengerAsync(updatePassengerModel.Id, updatePassengerModel);
-                    Snackbar.Add("Passenger updated successfully", Severity.Success);
-                }
-                else
-                {
-                    await TricycleService.CreatePassengerAsync(passengerModel);
-                    Snackbar.Add("Passenger created successfully", Severity.Success);
-                }
-
-                showDialog = false;
-                await LoadPassengers();
-                await InvokeAsync(StateHasChanged);
-            }
-            catch (Exception ex)
-            {
-                Snackbar.Add($"Error saving passenger: {ex.Message}", Severity.Error);
-            }
-        }
-        else
-        {
-            showDialog = false;
         }
     }
 }

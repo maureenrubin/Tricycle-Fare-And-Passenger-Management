@@ -6,7 +6,7 @@
 @inject IReportClientService Report
 @inject ISnackbar Snackbar
 @inject IJSRuntime JSRuntime
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@rendermode InteractiveServer
 
 @if (isLoading || !hasRendered)
 {
@@ -14,13 +14,15 @@
 }
 else
 {
-    <div class="p-6 bg-gray-50 min-h-screen">
+    <div class="p-6 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
                 <p class="text-gray-600">Overview of your tricycle fare and passenger management system</p>
             </div>
+
+            <MudDivider Class="mt-5 mb-5" />
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-8">
@@ -253,6 +255,10 @@ else
                     </div>
                 </MudCardContent>
             </MudCard>
+
+            <MudDivider Class="mt-5 mb-5" />
+
+            <div id="map" class="modern-map"></div>
         </div>
     </div>
 }
@@ -275,6 +281,9 @@ else
     private List<TripDto> recentTrips = new();
     private DailyReportDto? dailyReport;
 
+    private IJSObjectReference? module;
+    private string? result;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -283,7 +292,17 @@ else
             await LoadDashboardData();
             StateHasChanged();
         }
+
+        if (firstRender)
+        {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/map.js");
+            if (module != null)
+            {
+                result = await module.InvokeAsync<string>("load_map");
+            }
+        }
     }
+
 
     private async Task LoadDashboardData()
     {

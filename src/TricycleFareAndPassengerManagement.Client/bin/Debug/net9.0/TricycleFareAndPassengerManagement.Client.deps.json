@@ -10,6 +10,7 @@
         "dependencies": {
           "Blazored.LocalStorage": "4.5.0",
           "FluentValidation": "12.0.0",
+          "LeafletForBlazor": "2.2.4",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.5",
           "MudBlazor": "8.6.0",
           "Newtonsoft.Json": "13.0.3",
@@ -36,6 +37,18 @@
           "lib/net8.0/FluentValidation.dll": {
             "assemblyVersion": "12.0.0.0",
             "fileVersion": "12.0.0.0"
+          }
+        }
+      },
+      "LeafletForBlazor/2.2.4": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "9.0.1",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "lib/net7.0/LeafletForBlazor.dll": {
+            "assemblyVersion": "2.2.4.0",
+            "fileVersion": "2.2.4.0"
           }
         }
       },
@@ -414,6 +427,13 @@
       "sha512": "sha512-8NVLxtMUXynRHJIX3Hn1ACovaqZIJASufXIIFkD0EUbcd5PmMsL1xUD5h548gCezJ5BzlITaR9CAMrGe29aWpA==",
       "path": "fluentvalidation/12.0.0",
       "hashPath": "fluentvalidation.12.0.0.nupkg.sha512"
+    },
+    "LeafletForBlazor/2.2.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YM58a8goueYhxmHxgSV6Oqvqm7D0L6O1IgM8i3oSOGaWIIT11pLEOxkTwun6XiivHHCUOJgadx934oIqkhBxuA==",
+      "path": "leafletforblazor/2.2.4",
+      "hashPath": "leafletforblazor.2.2.4.nupkg.sha512"
     },
     "MediatR/12.5.0": {
       "type": "package",

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "NPwnk0kS3o8=",
+  "dgSpecHash": "Te6+KrfC1q4=",
   "success": true,
   "projectFilePath": "C:\\Projects\\TricycleFareAndPassengerManagement\\src\\TricycleFareAndPassengerManagement.Client\\TricycleFareAndPassengerManagement.Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\blazored.localstorage\\4.5.0\\blazored.localstorage.4.5.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\fluentvalidation\\12.0.0\\fluentvalidation.12.0.0.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\leafletforblazor\\2.2.4\\leafletforblazor.2.2.4.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.5\\microsoft.aspnetcore.authentication.jwtbearer.9.0.5.nupkg.sha512",

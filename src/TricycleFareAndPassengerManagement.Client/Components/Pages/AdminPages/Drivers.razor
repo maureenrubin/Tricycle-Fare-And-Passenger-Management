@@ -9,7 +9,7 @@
 @inject IDriverClientService DriverService
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
-@layout DefaultUserLayout
+@layout MainLayout
 
 @if (isLoading)
 {
@@ -17,7 +17,7 @@
 }
 else
 {
-    <div class="p-6 bg-gray-50 min-h-screen">
+    <div class="p-6 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <div class="mb-6 mt-4 flex justify-between items-center">
                 <h1 class="text-3xl font-bold text-gray-900">Driver Management</h1>
@@ -75,8 +75,13 @@ else
 @code {
     private List<DriverDto> drivers = new();
     private bool isLoading = false;
+    private bool isEdit = false;
 
+    private CreateDriverCommand passengerModel = new();
     private UpdateDriverCommand updateDriverModel = new();
+
+    private CreateDriverValidator createValidator = new();
+    private UpdateDriverValidator updateValidator = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -84,12 +89,30 @@ else
         isLoading = false;
     }
 
+    private Func<object, string, Task<IEnumerable<string>>> validationFunc => async (model, propertyName) =>
+{
+    if (isEdit)
+    {
+        var result = await updateValidator.ValidateAsync(
+            FluentValidation.ValidationContext<UpdateDriverCommand>.CreateWithOptions(
+                (UpdateDriverCommand) model, x => x.IncludeProperties(propertyName)));
+        return result.IsValid ? Array.Empty<string>() : result.Errors.Select(e => e.ErrorMessage);
+    }
+    else
+    {
+        var result = await createValidator.ValidateAsync(
+            FluentValidation.ValidationContext<CreateDriverCommand>.CreateWithOptions(
+                (CreateDriverCommand) model, x => x.IncludeProperties(propertyName)));
+        return result.IsValid ? Array.Empty<string>() : result.Errors.Select(e => e.ErrorMessage);
+    }
+};
+
     private async Task LoadDrivers()
     {
         isLoading = true;
         try
         {
-            drivers = await DriverService.GetAllDriversAsync();
+            drivers = (await DriverService.GetAllDriversAsync()).ToList();
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception ex)
@@ -106,8 +129,9 @@ else
     {
         var parameters = new DialogParameters
         {
-            { "DriverModel", new CreateDriverCommand() },
-            { "IsEditing", false }
+            { "CreateModel", new CreateDriverCommand() },
+            { "IsEditing", false },
+            { "ValidationFunc", validationFunc }
         };
 
 
@@ -115,29 +139,46 @@ else
         var dialog = await DialogService.ShowAsync<DriversDialog>("Add Driver", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
+        if (!result.Canceled && result.Data is CreateDriverCommand driverData)
         {
-            var driverData = (CreateDriverCommand)result.Data;
-            await DriverService.CreateDriverAsync(driverData);
-            Snackbar.Add("Driver created successfully", Severity.Success);
-            await LoadDrivers();
-            await InvokeAsync(StateHasChanged);
+            try
+            {
+                await DriverService.CreateDriverAsync(driverData);
+                Snackbar.Add("Driver created successfully", Severity.Success);
+                await LoadDrivers();
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error creating driver: {ex.Message}", Severity.Error);
+            }
         }
     }
 
     private async void OpenEditDialog(DriverDto driver)
     {
-        var model = new CreateDriverCommand
-            {
-                FullName = driver.FullName,
-                LicenseNumber = driver.LicenseNumber,
-                PhoneNumber = driver.PhoneNumber,
-                TricycleNumber = driver.TricycleNumber
-            };
+        var createModel = new CreateDriverCommand
+        {
+             FullName = driver.FullName,
+             LicenseNumber = driver.LicenseNumber,
+             PhoneNumber = driver.PhoneNumber,
+             TricycleNumber = driver.TricycleNumber
+        };
+
+        var updateModel = new UpdateDriverCommand
+        {
+            Id = driver.Id,
+            FullName = driver.FullName,
+            LicenseNumber = driver.LicenseNumber,
+            PhoneNumber = driver.PhoneNumber,
+            TricycleNumber = driver.TricycleNumber,
+            IsActive = driver.IsActive
+        };
 
         var parameters = new DialogParameters
         {
-            { "DriverModel", model },
+            { "CreateModel", createModel },
+            { "UpdateModel", updateModel },
             { "IsEditing", true },
             { "DriverId", driver.Id }
         };
@@ -146,14 +187,19 @@ else
         var dialog = await DialogService.ShowAsync<DriversDialog>("Edit Driver", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
+        if (!result.Canceled && result.Data is UpdateDriverCommand updateData)
         {
-            var driverData = (CreateDriverCommand)result.Data;
-            // Implement UpdateDriverAsync in your service
-            // await DriverService.UpdateDriverAsync(driver.Id, driverData);
-            Snackbar.Add("Driver updated successfully", Severity.Success);
-            await LoadDrivers();
-            await InvokeAsync(StateHasChanged);
+            try
+            {
+                await DriverService.UpdateDriverAsync(driver.Id, updateData);
+                Snackbar.Add("Driver updated successfully", Severity.Success);
+                await LoadDrivers();
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error updating driver: {ex.Message}", Severity.Error);
+            }
         }
     }
 }

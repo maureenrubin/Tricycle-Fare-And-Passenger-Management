@@ -1,0 +1,84 @@
+﻿@using MudBlazor
+
+<MudDrawer @bind-Open="DrawerOpen" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+    <MudDrawerHeader Class="bg-primary text-white">
+        <MudText Typo="Typo.h6" Class="font-bold">My App</MudText>
+    </MudDrawerHeader>
+
+    <MudNavMenu>
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
+            <div class="flex items-center">
+                <span class="ml-3">Home</span>
+            </div>
+        </MudNavLink>
+
+        <MudNavLink Href="/map" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Map">
+            <div class="flex items-center">
+                <span class="ml-3">Interactive Map</span>
+            </div>
+        </MudNavLink>
+
+        <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">
+            <div class="flex items-center">
+                <span class="ml-3">Counter</span>
+            </div>
+        </MudNavLink>
+
+        <MudNavLink Href="/weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CloudQueue">
+            <div class="flex items-center">
+                <span class="ml-3">Weather</span>
+            </div>
+        </MudNavLink>
+
+        <MudDivider Class="my-2" />
+
+        <MudNavGroup Text="Tools" Icon="@Icons.Material.Filled.Build" Expanded="false">
+            <MudNavLink Href="/settings" Icon="@Icons.Material.Filled.Settings">
+                <div class="flex items-center">
+                    <span class="ml-3">Settings</span>
+                </div>
+            </MudNavLink>
+            <MudNavLink Href="/about" Icon="@Icons.Material.Filled.Info">
+                <div class="flex items-center">
+                    <span class="ml-3">About</span>
+                </div>
+            </MudNavLink>
+        </MudNavGroup>
+    </MudNavMenu>
+</MudDrawer>
+
+<style>
+    /* Custom styles for mini drawer */
+    .mud-drawer-mini .mud-nav-link-text {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .mud-drawer-mini:hover .mud-nav-link-text {
+        opacity: 1;
+    }
+
+    /* Highlight active map link */
+    .mud-nav-link[href="/map"].mud-nav-link-active {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+        border-radius: 0.375rem;
+        margin: 0 0.5rem;
+    }
+
+    /* Smooth transitions */
+    .mud-nav-link {
+        transition: all 0.2s ease-in-out;
+        border-radius: 0.375rem;
+        margin: 0.125rem 0.5rem;
+    }
+
+        .mud-nav-link:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            transform: translateX(2px);
+        }
+</style>
+
+@code {
+    public bool DrawerOpen { get; set; } = true;
+}
