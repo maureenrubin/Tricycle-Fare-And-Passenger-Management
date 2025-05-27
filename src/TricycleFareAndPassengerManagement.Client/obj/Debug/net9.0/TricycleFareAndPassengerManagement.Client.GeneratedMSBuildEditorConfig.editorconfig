@@ -39,14 +39,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEaWFsb2dzXFRyaXBEaWFsb2cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/AuthLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcQXV0aExheW91dC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/DefaultUserLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRGVmYXVsdFVzZXJMYXlvdXQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/MapNavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFwTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -71,10 +63,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoUGFnZXNcUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/DefaultUserPages/UserDashboard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZWZhdWx0VXNlclBhZ2VzXFVzZXJEYXNoYm9hcmQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -87,6 +75,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/AuthLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcQXV0aExheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-t0rxlrvxa5
+
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/DefaultUserLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRGVmYXVsdFVzZXJMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ax6mg2d8kv
+
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-8bzk26b8m2
@@ -98,6 +94,10 @@ build_metadata.AdditionalFiles.CssScope = b-4qb5r4bop4
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/AuthPages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoUGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-pze8mtc1e3
+
+[C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Components/Pages/DefaultUserPages/Landing.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZWZhdWx0VXNlclBhZ2VzXExhbmRpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-pvkqy7qds4
 
 [C:/Projects/TricycleFareAndPassengerManagement/src/TricycleFareAndPassengerManagement.Client/Shared/Loader.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvYWRlci5yYXpvcg==

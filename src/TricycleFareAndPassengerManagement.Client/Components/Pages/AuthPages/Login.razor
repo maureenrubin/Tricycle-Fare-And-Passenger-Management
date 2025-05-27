@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/login"
 @inject IAuthService AuthService
 @inject CustomAuthStateProvider CustomAuthStateProvider
 @inject NavigationManager Navigation
@@ -28,7 +28,7 @@ else
                         <MudIcon Icon="@Icons.Material.Filled.Lock" Color="Color.Success" Size="Size.Large" Class="text-white" />
                     </div>
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">
-                        Sign in to your account
+                        Sign in to your Admin Account
                     </h2>
                 </div>
 
@@ -94,8 +94,8 @@ else
                 </MudCard>
 
                 <!-- Social Login Section -->
-                <div class="space-y-4">
-                    <div class="relative">
+                <div class="space-y-4 mt-5">
+                    <div class="relative mb-5">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-gray-300"></div>
                         </div>

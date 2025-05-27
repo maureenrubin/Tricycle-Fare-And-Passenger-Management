@@ -8,13 +8,22 @@
 <MudSnackbarProvider />
 
 <MudContainer>
-    <MudAppBar Class="app-bar" Elevation="4">
+    <MudAppBar Class="app-bar" Elevation="5">
+        <MudAppBar Class="app-bar" Elevation="5">
 
-        <div>
-            <MudText Typo="Typo.h6">
-                Tricycle Fare and Passenger Management
-            </MudText>
-        </div>
+            <MudContainer Class="d-none d-md-block">
+                <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold mx-3">
+                    Tricycle Fare and Passenger Management
+                </MudText>
+            </MudContainer>
+            
+            <MudSpacer />
+
+            <MudContainer Class="d-none d-md-flex gap-2">
+                <button @onclick="NavigateToHomePage" class="nav-button">Home</button>
+                <button @onclick="NavigateToSignInPage" class="nav-button">Sign In</button>
+            </MudContainer>
+        </MudAppBar>
 
     </MudAppBar>
 
@@ -23,3 +32,16 @@
     </div>
 </MudContainer>
 
+@code {
+    [Inject] protected NavigationManager Navigation { get; set; } = default!;
+
+    public void NavigateToSignInPage()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    public void NavigateToHomePage()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

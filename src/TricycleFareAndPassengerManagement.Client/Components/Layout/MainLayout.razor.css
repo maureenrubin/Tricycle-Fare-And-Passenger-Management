@@ -4,38 +4,6 @@
     flex-direction: column;
 }
 
-.main-content-scroll {
-    padding: 1rem;
-    padding-top: 65px;
-    height: 100vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-
-button {
-    padding: 1.3em 3em;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    font-weight: 600;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    outline: none;
-}
-
-    button:hover {
-        background: linear-gradient(to right, #4338CA, #7C3AED);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-        transform: scale(1.02);
-    }
-
-    button:active {
-        transform: scale(0.98);
-    }
-
 main {
     flex: 1;
 }

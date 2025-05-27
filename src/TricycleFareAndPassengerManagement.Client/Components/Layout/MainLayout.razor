@@ -8,19 +8,17 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<div class="flex flex-col min-h-screen">
-    <MudAppBar Class="app-bar px-2" Elevation="4">
+<div>
+    <MudAppBar Class="app-bar" Elevation="4">
         <MudIconButton Color="Color.Inherit"
                        Size="Size.Large"
                        Class="d-flex text-white"
                        Icon="@Icons.Material.Filled.Menu"
                        OnClick="ToggleDrawer" />
 
-        <MudContainer Class="d-none d-md-block ml-20">
-            <MudText Typo="Typo.h6" Class="overflow-auto whitespace-nowrap decoration-black font-bold">
+        <MudText Typo="Typo.h6" Class="d-none d-md-block overflow-auto whitespace-nowrap decoration-black font-bold mx-3">
                 Tricycle Fare and Passenger Management
             </MudText>
-        </MudContainer>
     </MudAppBar>
 
     <MudBreakpointProvider OnBreakpointChanged="OnBreakpointChanged">
@@ -28,7 +26,7 @@
         <MudDrawer @bind-Open="_drawerOpen"
                    Anchor="Anchor.Left"
                    Class="fixed-drawer mt-15"
-                   Height="130vh"
+                   Height="100vh"
                    Variant="@_drawerVariant"
                    Elevation="4">
             <MudDrawerHeader>
