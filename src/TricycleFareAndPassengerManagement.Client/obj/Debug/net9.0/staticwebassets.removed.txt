@@ -1,1 +1,5 @@
-C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\js\date.js
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\input.css
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\Images\Landing.svg
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\app.css
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\js\map.js
+C:\Projects\TricycleFareAndPassengerManagement\src\TricycleFareAndPassengerManagement.Client\wwwroot\output.css
