@@ -12,8 +12,9 @@ The **Tricycle Fare and Passenger Management System** is a functional platform d
 
 As the **Associate Developer**, I worked closely with the Lead Developer, **Guiller Santos**, to:
 
-- Implement key features and core modules
+- Implement assigned key features and core modules
 - Ensure system functionality and usability
+
 
 ---
 
