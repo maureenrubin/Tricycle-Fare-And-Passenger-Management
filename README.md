@@ -14,7 +14,6 @@ As the **Associate Developer**, I worked closely with the Lead Developer, **Guil
 
 - Implement key features and core modules
 - Ensure system functionality and usability
-- Maintain clean, scalable code following industry best practices
 
 ---
 
